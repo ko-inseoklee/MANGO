@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "868564849053",
+    "project_id": "testios-3060d",
+    "storage_bucket": "testios-3060d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868564849053:android:c5bb1e214a564f9847df74",
+        "android_client_info": {
+          "package_name": "com.dobby.plz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868564849053-43co91753ln1no1nm25a4irdhooacvj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlYAgRfrtMKoqsyRE0Gf3KURZ1zshgOSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868564849053-43co91753ln1no1nm25a4irdhooacvj4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "868564849053-41i776k1p93joofv592h494806vshr9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dobby.testios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
