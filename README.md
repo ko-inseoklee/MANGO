@@ -1,4 +1,4 @@
-# plz
+# Mango
 
 A new Flutter application.
 
