@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plz/login.dart';
-import 'home.dart';
-
-final LOGIN = 'login';
-final HOME = 'home';
+import 'package:plz/routes.dart';
+import 'package:plz/view/login.dart';
+import 'view/home.dart';
 
 class mangoApp extends StatelessWidget {
   @override
@@ -11,11 +9,8 @@ class mangoApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mango - manage dietary life',
       home: homePage(),
-      initialRoute: LOGIN,
-      routes: {
-        LOGIN: (context) => loginPage(),
-        HOME: (context) => homePage(),
-      },
+      initialRoute: LANDING,
+      onGenerateRoute: routers.generateRoute,
     );
   }
 }

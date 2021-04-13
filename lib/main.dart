@@ -8,8 +8,5 @@ import 'model/user.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(StreamProvider<user>(
-    // create: (context) => new user(),
-    child: mangoApp(),
-  ));
+  runApp(mangoApp());
 }

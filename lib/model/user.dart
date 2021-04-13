@@ -1,4 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class user {
-  String userID;
-  String refrigID;
+  final String userID;
+  final int refrigID;
+  final DocumentReference reference;
+
+  user.fromSnapshot(DocumentSnapshot snapshot)
+      : assert(snapshot != null),
+        userID = snapshot.id,
+        refrigID = snapshot.data()['refrigID'],
+        reference = snapshot.reference;
+
+  // user.fromSnapshot(DocumentSnapshot snapshot)
 }
