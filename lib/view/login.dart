@@ -18,7 +18,12 @@ class _loginPageState extends State<loginPage> {
           child: ButtonTheme(
         child: RaisedButton.icon(
             onPressed: () async {
-              _googleLogin(context);
+              if (auth.currentUser == null) {
+                _googleLogin(context);
+                print('logged In - ${auth.currentUser}');
+              } else {
+                print('already logged In.');
+              }
             },
             icon: Icon(Icons.account_box),
             label: Text('구글 계정으로 시작하기')),
@@ -40,7 +45,6 @@ class _loginPageState extends State<loginPage> {
 
         final GoogleAuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
         return await auth.signInWithCredential(credential);
       }
     } catch (e) {

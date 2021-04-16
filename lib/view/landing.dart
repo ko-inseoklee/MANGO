@@ -16,7 +16,8 @@ class _landingPageState extends State<landingPage> {
     return StreamBuilder(
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
-          return snapshot.hasData ? homePage() : loginPage();
+          print(snapshot);
+          return auth.currentUser == null ? loginPage() : homePage();
         });
   }
 }

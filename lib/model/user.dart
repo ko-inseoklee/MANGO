@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class user {
   final String userID;
   final int refrigID;
+  String userName;
   final DocumentReference reference;
 
   user.fromSnapshot(DocumentSnapshot snapshot)
