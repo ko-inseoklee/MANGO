@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:plz/app.dart';
+import 'package:plz/view/addUserInfo.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/landing.dart';
 import 'package:plz/view/login.dart';
 
+const ADDUSERINFO = '/adduserinfo';
 const LANDING = '/landing';
 const LOGIN = '/login';
 const HOME = '/home';
@@ -11,6 +13,8 @@ const HOME = '/home';
 class routers {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case ADDUSERINFO:
+        return MaterialPageRoute(builder: (context) => addUserInfoPage());
       case LANDING:
         return MaterialPageRoute(builder: (context) => landingPage());
       case LOGIN:

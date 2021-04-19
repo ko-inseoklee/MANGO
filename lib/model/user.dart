@@ -11,6 +11,4 @@ class user {
         userID = snapshot.id,
         refrigID = snapshot.data()['refrigID'],
         reference = snapshot.reference;
-
-  // user.fromSnapshot(DocumentSnapshot snapshot)
 }

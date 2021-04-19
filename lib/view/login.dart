@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:plz/routes.dart';
 
 import 'package:plz/view/landing.dart';
 
@@ -18,12 +20,7 @@ class _loginPageState extends State<loginPage> {
           child: ButtonTheme(
         child: RaisedButton.icon(
             onPressed: () async {
-              if (auth.currentUser == null) {
-                _googleLogin(context);
-                print('logged In - ${auth.currentUser}');
-              } else {
-                print('already logged In.');
-              }
+              await _googleLogin(context);
             },
             icon: Icon(Icons.account_box),
             label: Text('구글 계정으로 시작하기')),
