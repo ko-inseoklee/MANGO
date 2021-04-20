@@ -17,4 +17,6 @@ samples, guidance on mobile development, and a full API reference.
 
 
 ## TODO
-    아직 Landing이 제대로 먹지 않음. 오류 수정해야함.
+    - Naver login
+    - Kakao login
+    - Finish login page
