@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:plz/routes.dart';
-
 import 'package:plz/view/landing.dart';
 
 class loginPage extends StatefulWidget {
@@ -17,14 +17,28 @@ class _loginPageState extends State<loginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: ButtonTheme(
-        child: RaisedButton.icon(
-            onPressed: () async {
-              await _googleLogin(context);
-            },
-            icon: Icon(Icons.account_box),
-            label: Text('구글 계정으로 시작하기')),
-      )),
+        child: Column(
+          children: [
+            ButtonTheme(
+              child: RaisedButton.icon(
+                  onPressed: () async {
+                    await _googleLogin(context);
+                  },
+                  icon: Icon(Icons.account_box),
+                  label: Text('구글 계정으로 시작하기')),
+            ),
+            ButtonTheme(
+              child: RaisedButton.icon(
+                  onPressed: () async {
+                    await _facebookLogin();
+                    print('facebook id === ${auth.currentUser}');
+                  },
+                  icon: Icon(Icons.account_box),
+                  label: Text('페이스북 계으로 시작하기')),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -47,5 +61,18 @@ class _loginPageState extends State<loginPage> {
     } catch (e) {
       print('Error reported: $e');
     }
+  }
+
+  Future<UserCredential> _facebookLogin() async {
+    // Trigger the sign-in flow
+    final AccessToken result = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final FacebookAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(result.token);
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance
+        .signInWithCredential(facebookAuthCredential);
   }
 }
