@@ -18,26 +18,26 @@ class landingPage extends StatefulWidget {
 }
 
 class _landingPageState extends State<landingPage> {
-  var returnPage;
+  bool userExist = false;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
-          if (auth.currentUser == null) {
-            returnPage = loginPage();
-          } else {
-            print('uid== ${auth.currentUser.uid}');
-            userCollection.doc(auth.currentUser.uid).get().then((document) {
-              if (document.exists) {
-                returnPage = homePage();
-              } else {
-                returnPage = addUserInfoPage();
-              }
-            });
-          }
-          return returnPage ?? loginPage();
+          return auth.currentUser == null
+              ? loginPage()
+              : FutureBuilder(
+                  future: checkDocExists(auth.currentUser.uid),
+                  builder: (context, snapshot) {
+                    return !userExist ? addUserInfoPage() : homePage();
+                  });
         });
+  }
+
+  checkDocExists(String docID) async {
+    DocumentSnapshot doc = await userCollection.doc(docID).get();
+    userExist = doc.exists;
+    print('userExist == $userExist');
   }
 }
