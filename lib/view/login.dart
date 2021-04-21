@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/landing.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class loginPage extends StatefulWidget {
   @override
@@ -98,11 +101,9 @@ class _loginPageState extends State<loginPage> {
     });
 
     final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: "webuthcallback");
+        url: url.toString(), callbackUrlScheme: "webauthcallback");
 
     final body = Uri.parse(result).queryParameters;
-
-    print(body);
 
     final tokenUrl = Uri.https('kauth.kakao.com', '/oauth/token', {
       'grant_type': 'authorization_code',
@@ -111,5 +112,14 @@ class _loginPageState extends State<loginPage> {
           'https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/sign_in',
       'code': body['code'],
     });
+
+    var response = await http.post(tokenUrl.toString());
+    Map<String, dynamic> accessTokenResult = jsonDecode(response.body);
+    var responseCustomToken = await http.post(
+        "https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/token",
+        body: {"accessToken": accessTokenResult['access_token']});
+
+    return await FirebaseAuth.instance
+        .signInWithCustomToken(responseCustomToken.body);
   }
 }
