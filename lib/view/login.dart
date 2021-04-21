@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/landing.dart';
+import 'package:uuid/uuid.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -31,11 +33,19 @@ class _loginPageState extends State<loginPage> {
               child: RaisedButton.icon(
                   onPressed: () async {
                     await _facebookLogin();
+                  },
+                  icon: Icon(Icons.account_box),
+                  label: Text('페이스북 계정으로 시작하기')),
+            ),
+            ButtonTheme(
+              child: RaisedButton.icon(
+                  onPressed: () async {
+                    await _kakaoLogin();
                     print('facebook id === ${auth.currentUser}');
                   },
                   icon: Icon(Icons.account_box),
-                  label: Text('페이스북 계으로 시작하기')),
-            )
+                  label: Text('카카오 계정으로 시작하기')),
+            ),
           ],
         ),
       ),
@@ -74,5 +84,32 @@ class _loginPageState extends State<loginPage> {
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance
         .signInWithCredential(facebookAuthCredential);
+  }
+
+  Future<UserCredential> _kakaoLogin() async {
+    final clientState = Uuid().v4();
+    final url = Uri.https('kauth.kakao.com', '/oauth/authorize', {
+      'response_type': 'code',
+      'client_id': 'ae58524d5e3551dcc6608530c1e38422',
+      'response_mode': 'form_post',
+      'redirect_uri':
+          'https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/sign_in',
+      'state': clientState,
+    });
+
+    final result = await FlutterWebAuth.authenticate(
+        url: url.toString(), callbackUrlScheme: "webuthcallback");
+
+    final body = Uri.parse(result).queryParameters;
+
+    print(body);
+
+    final tokenUrl = Uri.https('kauth.kakao.com', '/oauth/token', {
+      'grant_type': 'authorization_code',
+      'client_id': 'ae58524d5e3551dcc6608530c1e38422',
+      'redirect_uri':
+          'https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/sign_in',
+      'code': body['code'],
+    });
   }
 }

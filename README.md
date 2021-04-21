@@ -17,6 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 ## TODO
-    - Naver login
-    - Kakao login
+    - Naver login (안드로이드 버전은 apple login하면서)
+    - Kakao login (안드로이드 버전은 apple login하면서)
+    - Apple login
     - Finish login page
