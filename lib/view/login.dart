@@ -44,10 +44,17 @@ class _loginPageState extends State<loginPage> {
               child: RaisedButton.icon(
                   onPressed: () async {
                     await _kakaoLogin();
-                    print('facebook id === ${auth.currentUser}');
                   },
                   icon: Icon(Icons.account_box),
                   label: Text('카카오 계정으로 시작하기')),
+            ),
+            ButtonTheme(
+              child: RaisedButton.icon(
+                  onPressed: () async {
+                    await _naverLogin();
+                  },
+                  icon: Icon(Icons.account_box),
+                  label: Text('네이버 계정으로 시작하기')),
             ),
           ],
         ),
@@ -117,6 +124,40 @@ class _loginPageState extends State<loginPage> {
     Map<String, dynamic> accessTokenResult = jsonDecode(response.body);
     var responseCustomToken = await http.post(
         "https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/token",
+        body: {"accessToken": accessTokenResult['access_token']});
+
+    return await FirebaseAuth.instance
+        .signInWithCustomToken(responseCustomToken.body);
+  }
+
+  Future<UserCredential> _naverLogin() async {
+    final clientState = Uuid().v4();
+    final url = Uri.https('nid.naver.com', '/oauth2.0/authorize', {
+      'response_type': 'code',
+      'client_id': 'AfpKO3uaxcVTKiKu8aVU',
+      'response_mode': 'form_post',
+      'redirect_uri':
+          'https://woolly-nosy-titanoceratops.glitch.me/callbacks/naver/sign_in',
+      'state': clientState,
+    });
+
+    final result = await FlutterWebAuth.authenticate(
+        url: url.toString(), callbackUrlScheme: "webauthcallback");
+
+    final body = Uri.parse(result).queryParameters;
+
+    final tokenUrl = Uri.https('nid.naver.com', '/oauth2.0/token', {
+      'grant_type': 'authorization_code',
+      'client_id': 'AfpKO3uaxcVTKiKu8aVU',
+      'client_secret': 'J0KGCuqQvi',
+      'code': body['code'],
+      'state': clientState,
+    });
+
+    var response = await http.post(tokenUrl.toString());
+    Map<String, dynamic> accessTokenResult = jsonDecode(response.body);
+    var responseCustomToken = await http.post(
+        "https://woolly-nosy-titanoceratops.glitch.me/callbacks/naver/token",
         body: {"accessToken": accessTokenResult['access_token']});
 
     return await FirebaseAuth.instance
