@@ -3,7 +3,7 @@
 A new Flutter application.
 
 ## TODO
-    Login page
+    - Login page
         Apple Login
         Design
-    Adjust AppTheme
+    - Glitch server -> 개인 서버로 변경.
