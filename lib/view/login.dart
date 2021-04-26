@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' as io;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,7 @@ import 'package:plz/routes.dart';
 import 'package:plz/view/landing.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+import 'package:device_info/device_info.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -56,6 +58,15 @@ class _loginPageState extends State<loginPage> {
                   icon: Icon(Icons.account_box),
                   label: Text('네이버 계정으로 시작하기')),
             ),
+            io.Platform.isIOS
+                ? ButtonTheme(
+                    child: RaisedButton.icon(
+                        onPressed: () async {
+                          await _naverLogin();
+                        },
+                        icon: Icon(Icons.account_box),
+                        label: Text('애플 계정으로 시작하기')))
+                : Container(),
           ],
         ),
       ),

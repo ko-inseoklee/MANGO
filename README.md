@@ -4,7 +4,6 @@ A new Flutter application.
 
 ## TODO
     Login page
-        Kakao(Android)
-        Naver(Android,ios)
-        Apple
+        Apple Login
+        Design
     Adjust AppTheme
