@@ -10,6 +10,7 @@ class mangoApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mango - manage dietary life',
       home: homePage(),
+      theme: _buildMangoTheme(),
       initialRoute: LANDING,
       onGenerateRoute: routers.generateRoute,
     );

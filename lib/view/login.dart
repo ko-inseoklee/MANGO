@@ -5,9 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:plz/colors.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/landing.dart';
 import 'package:uuid/uuid.dart';
@@ -23,41 +26,175 @@ class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).accentColor,
       body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Spacer(
+            flex: 40,
+          ),
+          Container(
+            child: Text(
+              '당신의 냉장고를 관리해주는 집요정,',
+              style:
+                  Theme.of(context).textTheme.subtitle1.copyWith(color: White),
+            ),
+          ),
+          Spacer(
+            flex: 5,
+          ),
+          Container(
+            child: Image.asset('images/login/appName.png'),
+          ),
+          Spacer(
+            flex: 5,
+          ),
+          Container(
+            child: Text(
+              'Manager + 古',
+              style: Theme.of(context).textTheme.caption.copyWith(color: White),
+            ),
+          ),
+          Spacer(
+            flex: 2,
+          ),
+          Image(
+            image: AssetImage('images/login/logo.png'),
+            height: 140,
+            fit: BoxFit.contain,
+          ),
+          Spacer(
+            flex: 2,
+          ),
+          loginMethodWidget(platform),
+          Spacer(
+            flex: 2,
+          ),
+        ],
+      )),
+    );
+  }
+
+  Widget loginMethodWidget(bool isIOS) {
+    var loginWidth = 275.0;
+    var loginHeight = 275.0;
+
+    var logoSize = 25.0;
+    var buttonHeightRatio = 1.4;
+    var borderRatio = 5.0;
+
+    return Container(
+        alignment: Alignment.center,
+        width: loginWidth * (deviceWidth / prototypeWidth),
+        height: loginHeight * (deviceWidth / prototypeWidth),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ButtonTheme(
-              child: RaisedButton.icon(
-                  onPressed: () async {
-                    await _googleLogin(context);
-                  },
-                  icon: Icon(Icons.account_box),
-                  label: Text('구글 계정으로 시작하기')),
-            ),
+                minWidth: loginWidth * (deviceWidth / prototypeWidth),
+                height: logoSize *
+                    (deviceWidth / prototypeWidth) *
+                    buttonHeightRatio,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRatio)),
+                child: FlatButton(
+                    color: Colors.white,
+                    onPressed: () async {
+                      await _googleLogin(context);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image(
+                          image: AssetImage('images/login/google_logo.png'),
+                          width: logoSize * (deviceWidth / prototypeWidth),
+                          height: logoSize * (deviceWidth / prototypeWidth),
+                        ),
+                        Text(
+                          '구글 계정으로 시작하기',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ))),
             ButtonTheme(
-              child: RaisedButton.icon(
-                  onPressed: () async {
-                    await _facebookLogin();
-                  },
-                  icon: Icon(Icons.account_box),
-                  label: Text('페이스북 계정으로 시작하기')),
-            ),
+                minWidth: loginWidth * (deviceWidth / prototypeWidth),
+                height: logoSize *
+                    (deviceWidth / prototypeWidth) *
+                    buttonHeightRatio,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRatio)),
+                child: FlatButton(
+                    color: Colors.white,
+                    onPressed: () async {
+                      await _facebookLogin();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image(
+                          image: AssetImage('images/login/facebook_logo.png'),
+                          width: logoSize * (deviceWidth / prototypeWidth),
+                          height: logoSize * (deviceWidth / prototypeWidth),
+                        ),
+                        Text(
+                          '페이스북 계정으로 시작하기',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ))),
             ButtonTheme(
-              child: RaisedButton.icon(
-                  onPressed: () async {
-                    await _kakaoLogin();
-                  },
-                  icon: Icon(Icons.account_box),
-                  label: Text('카카오 계정으로 시작하기')),
-            ),
+                minWidth: loginWidth * (deviceWidth / prototypeWidth),
+                height: logoSize *
+                    (deviceWidth / prototypeWidth) *
+                    buttonHeightRatio,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRatio)),
+                child: FlatButton(
+                    color: Colors.white,
+                    onPressed: () async {
+                      await _kakaoLogin();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image(
+                          image: AssetImage('images/login/kakao_logo.png'),
+                          width: logoSize * (deviceWidth / prototypeWidth),
+                          height: logoSize * (deviceWidth / prototypeWidth),
+                        ),
+                        Text(
+                          '카카오 계정으로 시작하기',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ))),
             ButtonTheme(
-              child: RaisedButton.icon(
-                  onPressed: () async {
-                    await _naverLogin();
-                  },
-                  icon: Icon(Icons.account_box),
-                  label: Text('네이버 계정으로 시작하기')),
-            ),
+                minWidth: loginWidth * (deviceWidth / prototypeWidth),
+                height: logoSize *
+                    (deviceWidth / prototypeWidth) *
+                    buttonHeightRatio,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRatio)),
+                child: FlatButton(
+                    color: Colors.white,
+                    onPressed: () async {
+                      await _naverLogin();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image(
+                          image: AssetImage('images/login/naver_logo.png'),
+                          width: logoSize * (deviceWidth / prototypeWidth),
+                          height: logoSize * (deviceWidth / prototypeWidth),
+                        ),
+                        Text(
+                          '네이버 계정으로 시작하기',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ))),
             io.Platform.isIOS
                 ? ButtonTheme(
                     child: RaisedButton.icon(
@@ -66,11 +203,9 @@ class _loginPageState extends State<loginPage> {
                         },
                         icon: Icon(Icons.account_box),
                         label: Text('애플 계정으로 시작하기')))
-                : Container(),
+                : Text(' '),
           ],
-        ),
-      ),
-    );
+        ));
   }
 
   Future<void> _googleLogin(BuildContext context) async {

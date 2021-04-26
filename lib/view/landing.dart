@@ -8,6 +8,13 @@ import 'package:plz/view/addUserInfo.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/login.dart';
 
+var deviceWidth = 375.0;
+var deviceHeight = 812.0;
+var prototypeWidth = 375.0;
+var prototypeHeight = 812.0;
+
+var platform = true;
+
 FirebaseAuth auth = FirebaseAuth.instance;
 CollectionReference userCollection =
     FirebaseFirestore.instance.collection('User');
@@ -22,6 +29,11 @@ class _landingPageState extends State<landingPage> {
 
   @override
   Widget build(BuildContext context) {
+    platform = Platform.isIOS;
+
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceHeight = MediaQuery.of(context).size.height;
+
     return StreamBuilder(
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
@@ -38,6 +50,5 @@ class _landingPageState extends State<landingPage> {
   checkDocExists(String docID) async {
     DocumentSnapshot doc = await userCollection.doc(docID).get();
     userExist = doc.exists;
-    print('userExist == $userExist');
   }
 }
