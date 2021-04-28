@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:plz/model/user.dart';
 import 'package:plz/view/landing.dart';
+import 'package:provider/provider.dart';
 
 import '../routes.dart';
 
 class addUserInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var _user = Provider.of<User>(context);
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -14,6 +18,7 @@ class addUserInfoPage extends StatelessWidget {
             RaisedButton(
               onPressed: () async {
                 // await addUser(auth.currentUser.uid);
+                _user.creationTime = DateTime.now();
                 Navigator.popAndPushNamed(context, LANDING);
               },
               child: Text('회원가입'),

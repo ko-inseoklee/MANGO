@@ -13,25 +13,33 @@ import 'package:http/http.dart' as http;
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  me.User _userFromFirebase(User user) =>
-      user != null ? me.User(uid: user.uid) : null;
+  me.User _userFromFirebase(User user) {
+    // If the difference of creationTime exceed the maxAccessingTime(minutes), It regards Signed-in before.
+    int maxAccessingTime = 10;
 
-  Stream<me.User> get user {
-    var data = _auth.authStateChanges();
-    print(data);
-    return _auth.authStateChanges().map(_userFromFirebase);
+    if (user != null) {
+      var _firstCreation = user.metadata.creationTime;
+      bool _isfirst = DateTime.now().difference(_firstCreation).inMinutes <=
+              maxAccessingTime
+          ? true
+          : false;
+      return _isfirst
+          ? me.User(uid: user.uid)
+          : me.User(uid: user.uid, cTime: user.metadata.creationTime);
+    } else {
+      return null;
+    }
   }
+
+  Stream<me.User> get user => _auth.authStateChanges().map(_userFromFirebase);
 
   Future<void> googleLogin() async {
     try {
       UserCredential userCredential;
       if (kIsWeb) {
-        print('here google web!');
         GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
         userCredential = await _auth.signInWithPopup(googleAuthProvider);
       } else {
-        print('here google mobile!');
-
         final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
         final GoogleSignInAuthentication googleAuth =

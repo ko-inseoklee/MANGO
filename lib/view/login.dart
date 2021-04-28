@@ -17,20 +17,16 @@ class _loginPageState extends State<loginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('first initstate');
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    print('first dispose');
   }
 
   @override
   Widget build(BuildContext context) {
-    print('first page');
-    Authentication().printCurrentUser();
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,
       body: Center(
@@ -107,8 +103,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await Authentication().googleLogin().then(
-                          (value) => Navigator.popAndPushNamed(context, HOME));
+                      await Authentication().googleLogin();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,8 +129,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await Authentication().facebookLogin().then(
-                          (value) => Navigator.popAndPushNamed(context, HOME));
+                      await Authentication().facebookLogin();
                       Navigator.popAndPushNamed(context, HOME);
                     },
                     child: Row(
@@ -162,8 +156,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await Authentication().kakaoLogin().then(
-                          (value) => Navigator.popAndPushNamed(context, HOME));
+                      await Authentication().kakaoLogin();
                       // Origin
                       // await Authentication().kakaoLogin().then(
                       //         (value) => Navigator.popAndPushNamed(context, HOME));
@@ -192,8 +185,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await Authentication().naverLogin().then(
-                          (value) => Navigator.popAndPushNamed(context, HOME));
+                      await Authentication().naverLogin();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

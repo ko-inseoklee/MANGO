@@ -8,6 +8,7 @@ import 'package:plz/view/addUserInfo.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/login.dart';
 import 'package:plz/view/splash.dart';
+import 'package:plz/viewModel/authentication.dart';
 import 'package:provider/provider.dart';
 
 // Comment: Back-up ver
@@ -24,11 +25,9 @@ class _landingPageState extends State<landingPage> {
   @override
   Widget build(BuildContext context) {
     platform = Platform.isIOS;
-    var _userInfo = Provider.of<me.User>(context);
+    var _user = Provider.of<me.User>(context);
 
-    print('user info == ${_userInfo}');
-
-    return _userInfo == null ? loginPage() : homePage();
+    return _user == null ? loginPage() : homePage();
   }
 
   // checkDocExists(String docID) async {
