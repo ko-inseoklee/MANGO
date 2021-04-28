@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:plz/viewModel/authentication.dart';
 import 'package:plz/routes.dart';
-import 'package:plz/view/login.dart';
+import 'package:plz/view/landing.dart';
+import 'package:provider/provider.dart';
 import 'colors.dart';
-import 'view/home.dart';
+import 'model/user.dart';
 
 class mangoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mango - manage dietary life',
-      home: homePage(),
-      theme: _buildMangoTheme(),
-      initialRoute: LANDING,
-      onGenerateRoute: routers.generateRoute,
+    return StreamProvider<User>(
+      create: (_) => Authentication().user,
+      child: MaterialApp(
+        title: 'Mango - manage dietary life',
+        home: landingPage(),
+        theme: _buildMangoTheme(),
+        onGenerateRoute: routers.generateRoute,
+      ),
     );
   }
 }

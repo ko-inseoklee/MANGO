@@ -1,21 +1,11 @@
-import 'dart:convert';
 import 'dart:io' as io;
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:plz/colors.dart';
-import 'package:plz/routes.dart';
-import 'package:plz/view/landing.dart';
-import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
-import 'package:device_info/device_info.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/view/splash.dart';
+
+import '../routes.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -24,7 +14,23 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('first initstate');
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    print('first dispose');
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('first page');
+    Authentication().printCurrentUser();
     return Scaffold(
       backgroundColor: Theme.of(context).accentColor,
       body: Center(
@@ -32,7 +38,7 @@ class _loginPageState extends State<loginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Spacer(
-            flex: 40,
+            flex: 20,
           ),
           Container(
             child: Text(
@@ -57,7 +63,7 @@ class _loginPageState extends State<loginPage> {
             ),
           ),
           Spacer(
-            flex: 2,
+            flex: 4,
           ),
           Image(
             image: AssetImage('images/login/logo.png'),
@@ -65,11 +71,11 @@ class _loginPageState extends State<loginPage> {
             fit: BoxFit.contain,
           ),
           Spacer(
-            flex: 2,
+            flex: 4,
           ),
           loginMethodWidget(platform),
           Spacer(
-            flex: 2,
+            flex: 4,
           ),
         ],
       )),
@@ -101,7 +107,8 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await _googleLogin(context);
+                      await Authentication().googleLogin().then(
+                          (value) => Navigator.popAndPushNamed(context, HOME));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -127,7 +134,9 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await _facebookLogin();
+                      await Authentication().facebookLogin().then(
+                          (value) => Navigator.popAndPushNamed(context, HOME));
+                      Navigator.popAndPushNamed(context, HOME);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -153,7 +162,11 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await _kakaoLogin();
+                      await Authentication().kakaoLogin().then(
+                          (value) => Navigator.popAndPushNamed(context, HOME));
+                      // Origin
+                      // await Authentication().kakaoLogin().then(
+                      //         (value) => Navigator.popAndPushNamed(context, HOME));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -179,7 +192,8 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: Colors.white,
                     onPressed: () async {
-                      await _naverLogin();
+                      await Authentication().naverLogin().then(
+                          (value) => Navigator.popAndPushNamed(context, HOME));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -199,114 +213,12 @@ class _loginPageState extends State<loginPage> {
                 ? ButtonTheme(
                     child: RaisedButton.icon(
                         onPressed: () async {
-                          await _naverLogin();
+                          await Authentication().naverLogin();
                         },
                         icon: Icon(Icons.account_box),
                         label: Text('애플 계정으로 시작하기')))
                 : Text(' '),
           ],
         ));
-  }
-
-  Future<void> _googleLogin(BuildContext context) async {
-    try {
-      UserCredential userCredential;
-      if (kIsWeb) {
-        GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
-        userCredential = await auth.signInWithPopup(googleAuthProvider);
-      } else {
-        final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-
-        final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-        return await auth.signInWithCredential(credential);
-      }
-    } catch (e) {
-      print('Error reported: $e');
-    }
-  }
-
-  Future<UserCredential> _facebookLogin() async {
-    // Trigger the sign-in flow
-    final AccessToken result = await FacebookAuth.instance.login();
-
-    // Create a credential from the access token
-    final FacebookAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(result.token);
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance
-        .signInWithCredential(facebookAuthCredential);
-  }
-
-  Future<UserCredential> _kakaoLogin() async {
-    final clientState = Uuid().v4();
-    final url = Uri.https('kauth.kakao.com', '/oauth/authorize', {
-      'response_type': 'code',
-      'client_id': 'ae58524d5e3551dcc6608530c1e38422',
-      'response_mode': 'form_post',
-      'redirect_uri':
-          'https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/sign_in',
-      'state': clientState,
-    });
-
-    final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: "webauthcallback");
-
-    final body = Uri.parse(result).queryParameters;
-
-    final tokenUrl = Uri.https('kauth.kakao.com', '/oauth/token', {
-      'grant_type': 'authorization_code',
-      'client_id': 'ae58524d5e3551dcc6608530c1e38422',
-      'redirect_uri':
-          'https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/sign_in',
-      'code': body['code'],
-    });
-
-    var response = await http.post(tokenUrl.toString());
-    Map<String, dynamic> accessTokenResult = jsonDecode(response.body);
-    var responseCustomToken = await http.post(
-        "https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/token",
-        body: {"accessToken": accessTokenResult['access_token']});
-
-    return await FirebaseAuth.instance
-        .signInWithCustomToken(responseCustomToken.body);
-  }
-
-  Future<UserCredential> _naverLogin() async {
-    final clientState = Uuid().v4();
-    final url = Uri.https('nid.naver.com', '/oauth2.0/authorize', {
-      'response_type': 'code',
-      'client_id': 'AfpKO3uaxcVTKiKu8aVU',
-      'response_mode': 'form_post',
-      'redirect_uri':
-          'https://woolly-nosy-titanoceratops.glitch.me/callbacks/naver/sign_in',
-      'state': clientState,
-    });
-
-    final result = await FlutterWebAuth.authenticate(
-        url: url.toString(), callbackUrlScheme: "webauthcallback");
-
-    final body = Uri.parse(result).queryParameters;
-
-    final tokenUrl = Uri.https('nid.naver.com', '/oauth2.0/token', {
-      'grant_type': 'authorization_code',
-      'client_id': 'AfpKO3uaxcVTKiKu8aVU',
-      'client_secret': 'J0KGCuqQvi',
-      'code': body['code'],
-      'state': clientState,
-    });
-
-    var response = await http.post(tokenUrl.toString());
-    Map<String, dynamic> accessTokenResult = jsonDecode(response.body);
-    var responseCustomToken = await http.post(
-        "https://woolly-nosy-titanoceratops.glitch.me/callbacks/naver/token",
-        body: {"accessToken": accessTokenResult['access_token']});
-
-    return await FirebaseAuth.instance
-        .signInWithCustomToken(responseCustomToken.body);
   }
 }

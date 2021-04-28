@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Black = Color(0xFF000000);
 
-const DisabledColor = Color(0xFFEDEDED);
+const DisabledColor = Color(0xFFC2C2C2);
 const ErrorColor = Color(0xFFB00020);
 
 const Orange400 = Color(0xFFFFC21C);

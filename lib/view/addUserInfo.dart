@@ -13,7 +13,7 @@ class addUserInfoPage extends StatelessWidget {
             Text('add user info page'),
             RaisedButton(
               onPressed: () async {
-                await addUser(auth.currentUser.uid);
+                // await addUser(auth.currentUser.uid);
                 Navigator.popAndPushNamed(context, LANDING);
               },
               child: Text('회원가입'),
@@ -24,11 +24,11 @@ class addUserInfoPage extends StatelessWidget {
     );
   }
 
-  Future<void> addUser(String documentID) {
-    return userCollection
-        .doc(documentID)
-        .set({'userID': documentID, 'refrigID': '1234', 'userName': '이인석'})
-        .then((value) => print('회원가입이 정상적으로 완료되었습니다.'))
-        .catchError((error) => print('error occured.'));
-  }
+  // Future<void> addUser(String documentID) {
+  //   return userCollection
+  //       .doc(documentID)
+  //       .set({'userID': documentID, 'refrigID': '1234', 'userName': '이인석'})
+  //       .then((value) => print('회원가입이 정상적으로 완료되었습니다.'))
+  //       .catchError((error) => print('error occured.'));
+  // }
 }
