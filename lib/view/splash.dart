@@ -74,8 +74,10 @@ class _splashPageState extends State<splashPage> {
           Container(
             child: Text(
               '당신의 냉장고를 관리해주는 집요정,',
-              style:
-                  Theme.of(context).textTheme.subtitle1.copyWith(color: White),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: MangoWhite),
             ),
           ),
           Spacer(
@@ -90,7 +92,10 @@ class _splashPageState extends State<splashPage> {
           Container(
             child: Text(
               'Manager + 古',
-              style: Theme.of(context).textTheme.caption.copyWith(color: White),
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(color: MangoWhite),
             ),
           ),
           Spacer(
@@ -109,7 +114,7 @@ class _splashPageState extends State<splashPage> {
             width: _loginWidth * (deviceWidth / prototypeWidth),
             height: _loginHeight * (deviceWidth / prototypeWidth),
             child: CircularProgressIndicator(
-              backgroundColor: White,
+              backgroundColor: MangoWhite,
             ),
           ),
           Spacer(

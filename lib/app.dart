@@ -28,19 +28,20 @@ ThemeData _buildMangoTheme() {
 
   return base.copyWith(
     accentColor: Orange400,
-    primaryColor: White,
+    primaryColor: MangoWhite,
+    focusColor: Orange200,
     hoverColor: Orange400,
-    errorColor: ErrorColor,
+    errorColor: MangoErrorColor,
     cursorColor: Orange400,
     buttonTheme: base.buttonTheme.copyWith(
-        buttonColor: DisabledColor,
+        buttonColor: MangoDisabledColor,
         colorScheme: base.colorScheme.copyWith(secondary: Orange400)),
     colorScheme: ColorScheme.light().copyWith(primary: Orange500),
     textTheme: _buildMangoTextTheme(base.textTheme),
     primaryTextTheme: _buildMangoTextTheme(base.primaryTextTheme),
     accentTextTheme: _buildMangoTextTheme(base.accentTextTheme),
-    iconTheme: base.iconTheme.copyWith(color: Black),
-    primaryIconTheme: base.iconTheme.copyWith(color: Black),
+    iconTheme: base.iconTheme.copyWith(color: MangoBlack),
+    primaryIconTheme: base.iconTheme.copyWith(color: MangoBlack),
   );
 }
 

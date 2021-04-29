@@ -28,6 +28,7 @@ class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).accentColor,
       body: Center(
           child: Column(
@@ -39,8 +40,10 @@ class _loginPageState extends State<loginPage> {
           Container(
             child: Text(
               '당신의 냉장고를 관리해주는 집요정,',
-              style:
-                  Theme.of(context).textTheme.subtitle1.copyWith(color: White),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: MangoWhite),
             ),
           ),
           Spacer(
@@ -55,7 +58,10 @@ class _loginPageState extends State<loginPage> {
           Container(
             child: Text(
               'Manager + 古',
-              style: Theme.of(context).textTheme.caption.copyWith(color: White),
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(color: MangoWhite),
             ),
           ),
           Spacer(
@@ -101,7 +107,7 @@ class _loginPageState extends State<loginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRatio)),
                 child: FlatButton(
-                    color: Colors.white,
+                    color: MangoWhite,
                     onPressed: () async {
                       await Authentication().googleLogin();
                     },
@@ -127,7 +133,7 @@ class _loginPageState extends State<loginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRatio)),
                 child: FlatButton(
-                    color: Colors.white,
+                    color: MangoWhite,
                     onPressed: () async {
                       await Authentication().facebookLogin();
                       Navigator.popAndPushNamed(context, HOME);
@@ -154,12 +160,9 @@ class _loginPageState extends State<loginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRatio)),
                 child: FlatButton(
-                    color: Colors.white,
+                    color: MangoWhite,
                     onPressed: () async {
                       await Authentication().kakaoLogin();
-                      // Origin
-                      // await Authentication().kakaoLogin().then(
-                      //         (value) => Navigator.popAndPushNamed(context, HOME));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -183,7 +186,7 @@ class _loginPageState extends State<loginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRatio)),
                 child: FlatButton(
-                    color: Colors.white,
+                    color: MangoWhite,
                     onPressed: () async {
                       await Authentication().naverLogin();
                     },

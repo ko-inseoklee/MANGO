@@ -5,10 +5,11 @@ class User {
   int refrigID;
   DateTime creationTime;
   String userName;
-  DocumentReference reference;
 
-  User({String uid, DateTime cTime}) {
+  //uName: user_name, cTime: creation_time
+  User({String uid, String uName, DateTime cTime}) {
     userID = uid;
+    userName = uName;
     creationTime = cTime;
   }
 }

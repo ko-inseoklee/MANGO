@@ -87,7 +87,7 @@ class _guidePageState extends State<guidePage> {
       child: Icon(
         Icons.fiber_manual_record,
         size: prototypeDotSize * (deviceWidth / prototypeWidth),
-        color: DisabledColor,
+        color: MangoDisabledColor,
       ),
     );
   }

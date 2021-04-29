@@ -24,8 +24,11 @@ class Authentication {
           ? true
           : false;
       return _isfirst
-          ? me.User(uid: user.uid)
-          : me.User(uid: user.uid, cTime: user.metadata.creationTime);
+          ? me.User(uid: user.uid, uName: user.displayName)
+          : me.User(
+              uid: user.uid,
+              uName: user.displayName,
+              cTime: user.metadata.creationTime);
     } else {
       return null;
     }
