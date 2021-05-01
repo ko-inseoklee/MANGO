@@ -24,11 +24,9 @@ class Authentication {
           ? true
           : false;
       return _isfirst
-          ? me.User(uid: user.uid, uName: user.displayName)
-          : me.User(
-              uid: user.uid,
-              uName: user.displayName,
-              cTime: user.metadata.creationTime);
+          ? me.User.fromAuthentication(user.uid, user.displayName, null)
+          : me.User.fromAuthentication(
+              user.uid, user.displayName, user.metadata.creationTime);
     } else {
       return null;
     }

@@ -1,0 +1,3 @@
+class UserRefrigerator {
+  String refrigeratorID;
+}

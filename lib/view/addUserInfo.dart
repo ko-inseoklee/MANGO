@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:plz/colors.dart';
 import 'package:plz/model/user.dart';
+import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 class addUserInfoPage extends StatefulWidget {
@@ -35,6 +38,8 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
             : setAlarmPage(context));
   }
 
+  //Data for newbie user
+
   Widget setPersonalDataPage(BuildContext context) {
     var _user = Provider.of<User>(context);
     var _contentWidth = 350.0;
@@ -54,8 +59,16 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                 0, 33 * (deviceWidth / prototypeWidth)),
             width: _contentWidth * (deviceWidth / prototypeWidth),
             child: TextField(
+              maxLength: 12,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[A-z]'))
+              ],
               controller: _nameController,
               decoration: InputDecoration(
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).errorColor, width: 1.0),
+                  ),
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -77,9 +90,14 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                   borderRadius: BorderRadius.circular(5.0)),
               child: RaisedButton(
                 color: Theme.of(context).accentColor,
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     print(_nameController.text);
+
+                    print(_user.userName);
+
+                    Navigator.popAndPushNamed(context, HOME);
+                    // 나중에 사용할 것. 두번째 페이지 변경
                     // _isFirstPage = false;
                   });
                 },
