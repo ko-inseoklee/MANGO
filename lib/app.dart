@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/controller/authentication.dart';
+import 'package:plz/controller/userViewModel.dart';
 import 'package:plz/routes.dart';
+import 'package:plz/view/home.dart';
 import 'package:plz/view/landing.dart';
 import 'package:provider/provider.dart';
 import 'colors.dart';
@@ -9,12 +11,15 @@ import 'model/user.dart';
 class mangoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>(
-      create: (_) => Authentication().user,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Authentication>(create: (_) => Authentication()),
+        // StreamProvider<User>(create: (_) => UserViewModel().user),
+      ],
       child: MaterialApp(
         title: 'Mango - manage dietary life',
         home: landingPage(),
-        theme: _buildMangoTheme(),
+        theme: _mangoTheme,
         onGenerateRoute: routers.generateRoute,
       ),
     );

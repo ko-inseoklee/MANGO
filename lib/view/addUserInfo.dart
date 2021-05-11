@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plz/colors.dart';
+import 'package:plz/controller/authentication.dart';
+import 'package:plz/controller/userViewModel.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';
-import 'package:plz/viewModel/authentication.dart';
-import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 class addUserInfoPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class addUserInfoPage extends StatefulWidget {
 }
 
 class _addUserInfoPageState extends State<addUserInfoPage> {
+  Authentication _auth;
   List<String> _pageTitle = ['개인정보 설정', '알림 주기 설정'];
 
   bool _isFirstPage = true;
@@ -41,7 +43,7 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
   //Data for newbie user
 
   Widget setPersonalDataPage(BuildContext context) {
-    var _user = Provider.of<User>(context);
+    _auth = Provider.of<Authentication>(context);
     var _contentWidth = 350.0;
 
     final _nameController = TextEditingController();
@@ -75,7 +77,6 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                         color: Theme.of(context).focusColor, width: 1.0),
                   ),
                   // border: OutlineInputBorder(),
-                  hintText: _user.userName,
                   hintStyle: Theme.of(context)
                       .textTheme
                       .subtitle2
@@ -92,14 +93,17 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                 color: Theme.of(context).accentColor,
                 onPressed: () async {
                   setState(() {
-                    print(_nameController.text);
-
-                    print(_user.userName);
-
-                    Navigator.popAndPushNamed(context, HOME);
                     // 나중에 사용할 것. 두번째 페이지 변경
                     // _isFirstPage = false;
                   });
+
+                  await makeUserInformation(
+                      _auth.user.uid,
+                      _nameController.text,
+                      _auth.user.metadata.creationTime,
+                      _auth.user.metadata.lastSignInTime);
+
+                  Navigator.popAndPushNamed(context, HOME);
                 },
                 child:
                     //TODO: It will be change '인증' after adding phone number authentication.

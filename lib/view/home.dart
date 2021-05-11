@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plz/controller/authentication.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/guide.dart';
-import 'package:plz/viewModel//authentication.dart';
 import 'package:plz/routes.dart';
-import 'package:plz/view/landing.dart';
-import 'package:plz/viewModel/userViewModel.dart';
+import './landing.dart';
+import 'package:plz/controller/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import 'addUserInfo.dart';
@@ -30,24 +30,31 @@ class _homePageState extends State<homePage> {
 
   @override
   Widget build(BuildContext context) {
-    var _user = Provider.of<User>(context);
-    //Example of updating stream
+    var _user = Provider.of<Authentication>(context);
 
-    if (_user.creationTime != null) {
-      Provider<User>.value(
-          value: User.fromSnapshot(findUserSnapshot(_user.userID)));
+    return _user.isAuthenticated != null
+        ? Center(
+            child: RaisedButton(
+                child: Text('Sign out'),
+                onPressed: () async {
+                  await Authentication().signOut();
+                  Navigator.popAndPushNamed(context, LANDING);
+                }))
+        : addUserInfoPage();
 
-      print(_user.userID);
-
-      return Center(
-          child: RaisedButton(
-              child: Text('Sign out'),
-              onPressed: () async {
-                await Authentication().signOut();
-                Navigator.popAndPushNamed(context, LANDING);
-              }));
-    } else {
-      return addUserInfoPage();
-    }
+    // if (_user.userName != null) {
+    //   // Provider<User>.value(
+    //   //     value: User.fromSnapshot(findUserSnapshot(_user.userID)));
+    //
+    //   return Center(
+    //       child: RaisedButton(
+    //           child: Text('Sign out'),
+    //           onPressed: () async {
+    //             await Authentication().signOut();
+    //             Navigator.popAndPushNamed(context, LANDING);
+    //           }));
+    // } else {
+    //   return addUserInfoPage();
+    // }
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,35 +7,47 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:plz/controller/userViewModel.dart';
 import 'package:plz/model/user.dart' as me;
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
-class Authentication {
+class Authentication with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  StreamSubscription userAuthSub;
+  User user;
 
-  me.User _userFromFirebase(User user) {
-    // If the difference of creationTime exceed the maxAccessingTime(minutes), It regards Signed-in before.
-    int maxAccessingTime = 10;
-
-    if (user != null) {
-      var _firstCreation = user.metadata.creationTime;
-      bool _isfirst = DateTime.now().difference(_firstCreation).inMinutes <=
-              maxAccessingTime
-          ? true
-          : false;
-      return _isfirst
-          ? me.User.fromAuthentication(user.uid, user.displayName, null)
-          : me.User.fromAuthentication(
-              user.uid, user.displayName, user.metadata.creationTime);
-    } else {
-      return null;
-    }
+  Authentication() {
+    _auth.authStateChanges().listen((newUser) {
+      print('Authentication - FirebaseAuth - AuthStateChanged - $newUser');
+      user = newUser;
+      notifyListeners();
+    }, onError: (e) {
+      print('Authentication - FirebaseAuth - AuthStateChanged - $e');
+    });
   }
 
-  Stream<me.User> get user => _auth.authStateChanges().map(_userFromFirebase);
+  @override
+  void dispose() {
+    if (userAuthSub != null) {
+      userAuthSub.cancel();
+      userAuthSub = null;
+    }
+    super.dispose();
+  }
 
-  Future<void> googleLogin() async {
+  bool get isAuthenticated => user != null;
+
+  // me.User _userFromFirebase(User user) {
+  //   return user == null
+  //       ? null
+  //       : me.User.fromAuthentication(user.uid, null, user.metadata.creationTime,
+  //           user.metadata.lastSignInTime);
+  // }
+
+  // Stream<me.User> get user => _auth.authStateChanges().map(_userFromFirebase);
+
+  Future<User> googleLogin() async {
     try {
       UserCredential userCredential;
       if (kIsWeb) {
@@ -49,14 +62,16 @@ class Authentication {
         final GoogleAuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-        return await _auth.signInWithCredential(credential);
+        final authResult = await _auth.signInWithCredential(credential);
+
+        return authResult.user;
       }
     } catch (e) {
       print('Error reported: $e');
     }
   }
 
-  Future<UserCredential> facebookLogin() async {
+  Future<User> facebookLogin() async {
     // Trigger the sign-in flow
     final AccessToken result = await FacebookAuth.instance.login();
 
@@ -65,10 +80,12 @@ class Authentication {
         FacebookAuthProvider.credential(result.token);
 
     // Once signed in, return the UserCredential
-    return await _auth.signInWithCredential(facebookAuthCredential);
+    final authResult = await _auth.signInWithCredential(facebookAuthCredential);
+
+    return authResult.user;
   }
 
-  Future<UserCredential> kakaoLogin() async {
+  Future<User> kakaoLogin() async {
     final clientState = Uuid().v4();
     final url = Uri.https('kauth.kakao.com', '/oauth/authorize', {
       'response_type': 'code',
@@ -98,10 +115,12 @@ class Authentication {
         "https://woolly-nosy-titanoceratops.glitch.me/callbacks/kakao/token",
         body: {"accessToken": accessTokenResult['access_token']});
 
-    return await _auth.signInWithCustomToken(responseCustomToken.body);
+    final authResult =
+        await _auth.signInWithCustomToken(responseCustomToken.body);
+    return authResult.user;
   }
 
-  Future<UserCredential> naverLogin() async {
+  Future<User> naverLogin() async {
     final clientState = Uuid().v4();
     final url = Uri.https('nid.naver.com', '/oauth2.0/authorize', {
       'response_type': 'code',
@@ -131,22 +150,17 @@ class Authentication {
         "https://woolly-nosy-titanoceratops.glitch.me/callbacks/naver/token",
         body: {"accessToken": accessTokenResult['access_token']});
 
-    return await _auth.signInWithCustomToken(responseCustomToken.body);
+    final authResult =
+        await _auth.signInWithCustomToken(responseCustomToken.body);
+
+    return authResult.user;
   }
 
   Future<void> signOut() {
-    _auth.signOut();
-  }
-
-  Future<bool> isFirstSignin(String documentID) async {
-    DocumentSnapshot doc = await FirebaseFirestore.instance
-        .collection('User')
-        .doc(documentID)
-        .get();
-    return doc.exists;
-  }
-
-  void printCurrentUser() {
-    print(_auth.currentUser);
+    try {
+      _auth.signOut();
+    } catch (e) {
+      print('exception error: $e');
+    }
   }
 }

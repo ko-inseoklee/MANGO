@@ -1,9 +1,12 @@
 import 'dart:io' as io;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plz/colors.dart';
-import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/controller/authentication.dart';
 import 'package:plz/view/splash.dart';
+import 'package:plz/controller/userViewModel.dart';
+import 'package:provider/provider.dart';
 
 import '../routes.dart';
 
@@ -13,6 +16,8 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  Authentication _auth;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -27,6 +32,8 @@ class _loginPageState extends State<loginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _auth = Provider.of<Authentication>(context);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).accentColor,
@@ -109,7 +116,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: MangoWhite,
                     onPressed: () async {
-                      await Authentication().googleLogin();
+                      _auth.user = await Authentication().googleLogin();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -135,8 +142,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: MangoWhite,
                     onPressed: () async {
-                      await Authentication().facebookLogin();
-                      Navigator.popAndPushNamed(context, HOME);
+                      _auth.user = await Authentication().facebookLogin();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -162,7 +168,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: MangoWhite,
                     onPressed: () async {
-                      await Authentication().kakaoLogin();
+                      _auth.user = await Authentication().kakaoLogin();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -188,7 +194,7 @@ class _loginPageState extends State<loginPage> {
                 child: FlatButton(
                     color: MangoWhite,
                     onPressed: () async {
-                      await Authentication().naverLogin();
+                      _auth.user = await Authentication().naverLogin();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
