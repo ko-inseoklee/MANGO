@@ -9,3 +9,4 @@ A new Flutter application.
     - Display SplashPage before starting.
     - Use Phone number Authentication.
     - Set name constraint
+    - 

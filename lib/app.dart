@@ -4,6 +4,7 @@ import 'package:plz/controller/userViewModel.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/landing.dart';
+import 'package:plz/view/splash.dart';
 import 'package:provider/provider.dart';
 import 'colors.dart';
 import 'model/user.dart';
@@ -19,6 +20,7 @@ class mangoApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Mango - manage dietary life',
         home: landingPage(),
+        initialRoute: SPLASH,
         theme: _mangoTheme,
         onGenerateRoute: routers.generateRoute,
       ),

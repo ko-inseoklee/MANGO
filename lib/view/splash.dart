@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:is_first_run/is_first_run.dart';
-import 'package:plz/view/guide.dart';
-import 'package:plz/view/landing.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:plz/routes.dart';
+
+import 'package:flutter/src/scheduler/ticker.dart';
 import '../colors.dart';
 
 var deviceWidth = 375.0;
@@ -17,48 +18,43 @@ class splashPage extends StatefulWidget {
   _splashPageState createState() => _splashPageState();
 }
 
-class _splashPageState extends State<splashPage> {
+class _splashPageState extends State<splashPage>
+    with SingleTickerProviderStateMixin {
   //TODO: for testing
-  void _reset() async {
-    await IsFirstRun.reset();
-  }
-
-  bool _isFirstRun = true;
   var _loginWidth = 275.0;
   var _loginHeight = 275.0;
 
+  AnimationController _animationController;
+  Animation _animation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
+    _animation = Tween(begin: 1.0, end: 0.0).animate(_animationController);
+    Timer(Duration(seconds: 2),
+        () => Navigator.popAndPushNamed(context, LANDING));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _animationController.forward();
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
 
-    return FutureBuilder(
-        future: isFirstRun(),
-        builder: (BuildContext context, AsyncSnapshot snapshots) {
-          IsFirstRun.reset();
-          if (snapshots.hasError) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Error: ${snapshots.error}',
-                style: TextStyle(fontSize: 15),
-              ),
-            );
-          }
-          if (snapshots.hasData) {
-            return _isFirstRun ? guidePage() : landingPage();
-          }
-          return loadingAppRun();
-        });
-  }
-
-  Future<bool> isFirstRun() async {
-    bool _temp = await IsFirstRun.isFirstRun();
-
-    setState(() {
-      _isFirstRun = _temp;
-    });
-    return _isFirstRun;
+    return FadeTransition(
+      opacity: _animation,
+      child: loadingAppRun(),
+    );
   }
 
   Widget loadingAppRun() {
