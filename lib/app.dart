@@ -36,6 +36,7 @@ ThemeData _buildMangoTheme() {
   return base.copyWith(
     accentColor: Orange400,
     primaryColor: MangoWhite,
+    unselectedWidgetColor: MangoDisabledColor,
     focusColor: Orange200,
     hoverColor: Orange400,
     errorColor: MangoErrorColor,

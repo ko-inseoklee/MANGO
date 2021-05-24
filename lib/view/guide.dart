@@ -32,6 +32,7 @@ class _guidePageState extends State<guidePage> {
       itemCount: imgList.length,
       itemBuilder: (BuildContext context, int index) {
         return Scaffold(
+          backgroundColor: MangoWhite,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +44,13 @@ class _guidePageState extends State<guidePage> {
                 ),
                 scrollProgress(index),
                 index == imgList.length - 1
-                    ? RaisedButton(onPressed: null)
+                    ? ButtonTheme(
+                        child: RaisedButton(
+                          onPressed: () =>
+                              Navigator.popAndPushNamed(context, HOME),
+                          child: Text('MANGO 시작하기'),
+                        ),
+                      )
                     : FlatButton(
                         onPressed: () =>
                             Navigator.popAndPushNamed(context, HOME),

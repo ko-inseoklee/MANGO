@@ -8,6 +8,12 @@ class User {
   String userName;
   DocumentReference reference;
   String refrigeratorID;
+  int refrigerationAlarm;
+  bool isRefShelf;
+  int frozenAlarm;
+  bool isFroShelf;
+  int roomTempAlarm;
+  bool isRTShelf;
 
   User(
       {this.userID,

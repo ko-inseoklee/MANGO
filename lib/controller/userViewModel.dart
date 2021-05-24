@@ -17,12 +17,27 @@ class UserViewModel {
   }
 }
 
-Future<void> makeUserInformation(String uid, String name, DateTime creationTime,
-    DateTime lastSignInTime) async {
+Future<void> makeUserInformation(
+    String uid,
+    String name,
+    DateTime creationTime,
+    DateTime lastSignInTime,
+    int refrigerationAlarm,
+    bool isRefShelf,
+    int frozenAlarm,
+    bool isFroShelf,
+    int roomTempAlarm,
+    bool isRTShelf) async {
   await FirebaseFirestore.instance.collection(userCollection).doc(uid).set({
     'uid': uid,
     'name': name,
     'creation_time': creationTime,
-    'last_signed_time': lastSignInTime
+    'last_signed_time': lastSignInTime,
+    'refrigeration_is_shelf': isRefShelf,
+    'refrigeration_shelf_life_alarm': refrigerationAlarm,
+    'frozen_is_shelf': isFroShelf,
+    'frozen_shelf_life_alarm': frozenAlarm,
+    'room_temp_is_shelf': isRTShelf,
+    'room_temp_shelf_life_alarm': roomTempAlarm,
   });
 }
