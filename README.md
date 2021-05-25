@@ -12,6 +12,7 @@ A new Flutter application.
             - 이름 설정 제한
             - 알림 주기 설정 시 다른 칸은 터치가 되지 않도록.
             - 데이터 설정 이전에 다음 페이지로 넘어갈 수 없도록.
+    - Home StreamProvider Data 제대로 불러오는 지 확인.
 ## Dev Notify
     - IOS
         Change Target directory to Own name.  

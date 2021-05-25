@@ -8,6 +8,7 @@ import 'package:plz/view/market.dart';
 import 'package:plz/view/myAccount.dart';
 import 'package:plz/view/nutrition.dart';
 import 'package:plz/view/refrigerator.dart';
+import 'package:plz/view/splash.dart';
 import 'package:plz/view/trade.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +53,12 @@ class _homePageState extends State<homePage> {
       child: PersistentTabView(
         context,
         screens: _screenList,
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).accentColor,
+            child: Icon(Icons.add)),
+        resizeToAvoidBottomInset: false,
         items: _navBarItems(),
+        navBarHeight: 84 * deviceHeight / prototypeHeight,
         navBarStyle: NavBarStyle.style3,
         controller: _controller,
       ),
@@ -67,32 +73,27 @@ class _homePageState extends State<homePage> {
     //         }));
   }
 
-  List<String> _navBarTitle = ['냉장고','마켓','거래광장','냉장고 분석','마이페이지'];
-  List<Icon> _navBarIcon = [Icon(Icons.account_box),Icon(Icons.account_box),Icon(Icons.account_box),Icon(Icons.account_box),Icon(Icons.account_box)];
+  List<String> _navBarTitle = ['냉장고', '마켓', '거래광장', '냉장고 분석', '마이페이지'];
+  List<Icon> _navBarIcon = [
+    Icon(Icons.kitchen_outlined),
+    Icon(Icons.shopping_cart_outlined),
+    Icon(Icons.local_mall_outlined),
+    Icon(Icons.fact_check_outlined),
+    Icon(Icons.account_box_outlined)
+  ];
 
   List<PersistentBottomNavBarItem> _navBarItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.account_box),
-        title: "Home",
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.account_box),
-        title: "Home2",
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.account_box),
-        title: "Home3",
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.account_box),
-        title: "Home4",
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.account_box),
-        title: "Home5",
-      )
-    ];
+    List<PersistentBottomNavBarItem> result = [];
+    for (int i = 0; i < 5; i++) {
+      var item = PersistentBottomNavBarItem(
+          icon: _navBarIcon[i],
+          iconSize: 26 * deviceWidth / prototypeWidth,
+          title: _navBarTitle[i],
+          activeColorPrimary: Theme.of(context).accentColor,
+          inactiveColorPrimary: Theme.of(context).disabledColor);
+      result.add(item);
+    }
 
+    return result;
   }
 }
