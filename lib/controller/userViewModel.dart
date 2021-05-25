@@ -15,6 +15,15 @@ class UserViewModel {
         .get();
     return me.User.fromSnapshot(snapshot);
   }
+
+  Stream<DocumentSnapshot> getUser(String uid) {
+    var stream = FirebaseFirestore.instance
+        .collection(userCollection)
+        .doc(uid)
+        .get()
+        .asStream();
+    return stream;
+  }
 }
 
 Future<void> makeUserInformation(
