@@ -9,6 +9,7 @@ import 'package:plz/view/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:select_form_field/select_form_field.dart';
+import 'package:uuid/uuid.dart';
 
 enum refrigerationAlarmType { shelfLife, registerDate }
 enum frozenAlarmType { shelfLife, registerDate }
@@ -227,6 +228,7 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                                 _userName,
                                 _auth.user.metadata.creationTime,
                                 _auth.user.metadata.lastSignInTime,
+                                Uuid().v4().toString(),
                                 _refrigerationAlarm,
                                 _isRefShelf,
                                 _frozenAlarm,
