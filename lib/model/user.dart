@@ -5,6 +5,7 @@ class User {
   String userID;
   DateTime creationTime;
   DateTime lastSignIn;
+  String profileImageReference;
   String userName;
   DocumentReference reference;
   String refrigeratorID;
@@ -34,7 +35,17 @@ class User {
       : assert(snapshot != null),
         userID = snapshot.id,
         userName = snapshot.data()['name'],
-        creationTime = snapshot.data()['creationTime'],
-        refrigeratorID = snapshot.data()['refrigID'],
+        creationTime = DateTime.fromMicrosecondsSinceEpoch(
+            snapshot.data()['creation_time'].microsecondsSinceEpoch),
+        refrigeratorID = snapshot.data()['refrigerator_id'],
+        isFroShelf = snapshot.data()['frozen_is_shelf'],
+        frozenAlarm = snapshot.data()['frozen_shelf_life_alarm'],
+        profileImageReference = snapshot.data()['profile_image'],
+        lastSignIn = DateTime.fromMicrosecondsSinceEpoch(
+            snapshot.data()['last_signed_time'].microsecondsSinceEpoch),
+        isRefShelf = snapshot.data()['refrigeration_is_shelf'],
+        refrigerationAlarm = snapshot.data()['refrigeration_shelf_life_alarm'],
+        isRTShelf = snapshot.data()['room_temp_is_shelf'],
+        roomTempAlarm = snapshot.data()['room_temp_shelf_life_alarm'],
         reference = snapshot.reference;
 }

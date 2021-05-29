@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:plz/controller/authentication.dart';
-import 'package:plz/controller/userViewModel.dart';
+import 'package:plz/controller/userController.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/market.dart';
 import 'package:plz/view/myAccount.dart';

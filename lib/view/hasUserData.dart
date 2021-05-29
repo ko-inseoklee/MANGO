@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plz/controller/authentication.dart';
-import 'package:plz/controller/userViewModel.dart';
+import 'package:plz/controller/userController.dart';
 import 'package:plz/model/user.dart';
 import 'package:provider/provider.dart';
 

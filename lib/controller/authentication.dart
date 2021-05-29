@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:plz/controller/userViewModel.dart';
+import 'package:plz/controller/userController.dart';
 import 'package:plz/model/user.dart' as me;
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
