@@ -7,6 +7,7 @@ const MangoBehindColor = Color(0xFFE6E6E6);
 const MangoErrorColor = Color(0xFFB00020);
 const MangoDisabledContainerColor = Color(0xFFEDEDED);
 
+const Orange50 = Color(0xFFFFF7E0);
 const Orange200 = Color(0xFFFFDB7D);
 const Orange400 = Color(0xFFFFC21C);
 const Orange500 = Color(0xFFF7C653);

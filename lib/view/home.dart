@@ -75,16 +75,16 @@ class _homePageState extends State<homePage> {
 
   List<String> _navBarTitle = ['냉장고', '마켓', '거래광장', '냉장고 분석', '마이페이지'];
   List<Icon> _navBarIcon = [
-    Icon(Icons.kitchen_outlined),
-    Icon(Icons.shopping_cart_outlined),
-    Icon(Icons.local_mall_outlined),
-    Icon(Icons.fact_check_outlined),
-    Icon(Icons.account_box_outlined)
+    Icon(Icons.kitchen_rounded),
+    Icon(Icons.shopping_cart_rounded),
+    Icon(Icons.local_mall_rounded),
+    Icon(Icons.fact_check_rounded),
+    Icon(Icons.account_box_rounded)
   ];
 
   List<PersistentBottomNavBarItem> _navBarItems() {
     List<PersistentBottomNavBarItem> result = [];
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < _navBarIcon.length; i++) {
       var item = PersistentBottomNavBarItem(
           icon: _navBarIcon[i],
           iconSize: 26 * deviceWidth / prototypeWidth,

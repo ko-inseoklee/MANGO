@@ -27,7 +27,7 @@ class _myPageState extends State<myPage> {
         child: Column(
           children: [
             Container(
-              height: 110 * deviceHeight / prototypeHeight,
+              height: 130 * deviceHeight / prototypeHeight,
               child: Row(
                 children: [
                   //TODO: should change the case of false condition with get image from firebase storage. Should change Using Stack for modify image button.
@@ -67,9 +67,13 @@ class _myPageState extends State<myPage> {
               color: MangoBehindColor,
             ),
             Container(
-              height: 220 * deviceHeight / prototypeHeight,
+              padding: EdgeInsets.all(5.0 * deviceWidth / prototypeWidth),
+              height: 250 * deviceHeight / prototypeHeight,
               child: Center(
-                child: Text('my page!'),
+                child: GridView.count(
+                  crossAxisCount: 4,
+                  children: _buildGridMenu(),
+                ),
               ),
             ),
             Container(
@@ -106,5 +110,66 @@ class _myPageState extends State<myPage> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildGridMenu() {
+    List<String> _menuTitle = [
+      '전체 거래 내역',
+      '나의 거래 게시글',
+      'MY MARKET',
+      '냉장고 관리',
+      '나의 영양 정보 관리',
+      '알림 관리',
+      '앱 설정'
+    ];
+    List<IconData> _menuIcon = [
+      Icons.note_outlined,
+      Icons.account_box_outlined,
+      Icons.shopping_cart_outlined,
+      Icons.kitchen_outlined,
+      Icons.fact_check_outlined,
+      Icons.notifications_none,
+      Icons.settings
+    ];
+
+    List<Widget> _cards = [];
+
+    for (int i = 0; i < _menuTitle.length; i++) {
+      Widget _card = Container(
+        width: 85 * deviceWidth / prototypeWidth,
+        height: 80 * deviceHeight / prototypeHeight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(6.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Orange50,
+              ),
+              child: IconButton(
+                icon: Icon(
+                  _menuIcon[i],
+                  size: 34 * deviceWidth / prototypeWidth,
+                  color: Theme.of(context).accentColor,
+                ),
+                onPressed: () => print('good'),
+              ),
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(top: 5.0 * deviceHeight / prototypeHeight),
+              child: Text(
+                _menuTitle[i],
+                style: Theme.of(context).textTheme.caption,
+              ),
+            )
+          ],
+        ),
+      );
+      _cards.add(_card);
+    }
+
+    return _cards;
   }
 }
