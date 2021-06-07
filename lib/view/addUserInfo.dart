@@ -260,7 +260,7 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
   Widget alarmCard(String title, int type) {
     return Container(
       color: alarmIdx == type ? MangoWhite : MangoDisabledContainerColor,
-      padding: EdgeInsets.fromLTRB(24.0 * (deviceWidth / prototypeWidth), 0,
+      padding: EdgeInsets.fromLTRB(20.0 * (deviceWidth / prototypeWidth), 0,
           24.0 * (deviceWidth / prototypeWidth), 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,

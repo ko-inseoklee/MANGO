@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:plz/controller/authentication.dart';
 import 'package:plz/controller/userController.dart';
 import 'package:plz/routes.dart';
+import 'package:plz/view/addUserInfo.dart';
+import 'package:plz/view/guide.dart';
+import 'package:plz/view/hasUserData.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/landing.dart';
+import 'package:plz/view/login.dart';
 import 'package:plz/view/splash.dart';
+import 'package:plz/view/widget/settings/alarmSettings.dart';
+import 'package:plz/view/widget/settings/appSettings.dart';
 import 'package:provider/provider.dart';
 import 'colors.dart';
 import 'model/user.dart';
@@ -19,7 +25,7 @@ class mangoApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Mango - manage dietary life',
-        home: landingPage(),
+        home: homePage(),
         initialRoute: SPLASH,
         theme: _mangoTheme,
         onGenerateRoute: routers.generateRoute,
