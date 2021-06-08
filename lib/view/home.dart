@@ -20,16 +20,6 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   int selectedIndex = 0;
 
-  List<Widget> _screenList = [
-    refrigeratorPage(
-      storage: CounterStorage(),
-    ),
-    marketPage(),
-    tradePage(),
-    nutritionPage(),
-    myPage()
-  ];
-
   @override
   void initState() {
     // TODO: implement initState
