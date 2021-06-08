@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:plz/colors.dart';
 import 'package:plz/controller/authentication.dart';
 import 'package:plz/controller/userController.dart';
@@ -11,7 +10,6 @@ import 'package:plz/view/refrigerator.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/view/trade.dart';
 import 'package:provider/provider.dart';
-
 import '../routes.dart';
 
 class homePage extends StatefulWidget {
@@ -20,16 +18,17 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
+  int selectedIndex = 0;
+
   List<Widget> _screenList = [
-    refrigeratorPage(),
+    refrigeratorPage(
+      storage: CounterStorage(),
+    ),
     marketPage(),
     tradePage(),
     nutritionPage(),
     myPage()
   ];
-
-  PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
 
   @override
   void initState() {
@@ -49,18 +48,20 @@ class _homePageState extends State<homePage> {
 
     return StreamProvider<DocumentSnapshot>(
       create: (_) => UserViewModel().getUser(_user.user.uid),
-      child: Scaffold(
-        backgroundColor: MangoWhite,
-        appBar: AppBar(
-          title: Text(_items[selectedIdx].itemName),
-          centerTitle: true,
-        ),
-        body: pages[selectedIdx],
-        bottomNavigationBar: bottomAppbar(),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).accentColor,
-            child: Icon(Icons.add)),
-      ),
+      builder: (context, child) {
+        return Scaffold(
+          backgroundColor: MangoWhite,
+          appBar: AppBar(
+            title: Text(_items[selectedIdx].itemName),
+            centerTitle: true,
+          ),
+          body: pages[selectedIdx],
+          bottomNavigationBar: bottomAppbar(),
+          floatingActionButton: FloatingActionButton(
+              backgroundColor: Theme.of(context).accentColor,
+              child: Icon(Icons.add)),
+        );
+      },
     );
   }
 
