@@ -28,7 +28,7 @@ class hasUserDataPage extends StatelessWidget {
             return StreamProvider<DocumentSnapshot>(
               create: (_) => user(uid: _auth.user.uid).snapshot,
               builder: (context, child) {
-                return homePage();
+                return Home2();
               },
             );
           } else {

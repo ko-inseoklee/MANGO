@@ -20,6 +20,8 @@ class TabItem {
     _index = i;
   }
 
+  int getIndex() => _index;
+
   Widget get page {
     return Visibility(
       //TODO: AppState.currentTab => Custom to homepage.

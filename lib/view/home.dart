@@ -9,7 +9,8 @@ import 'package:plz/view/nutrition.dart';
 import 'package:plz/view/refrigerator.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/view/trade.dart';
-import 'package:plz/view/widget/settings/tabItem.dart';
+import 'package:plz/view/widget/bottomNavigationBar/bottomNavigationBar.dart';
+import 'package:plz/view/widget/bottomNavigationBar/tabItem.dart';
 import 'package:provider/provider.dart';
 import '../routes.dart';
 
@@ -164,6 +165,12 @@ class Home2State extends State<Home2> {
     TabItem(tabName: "마이 페이지", icon: Icons.account_box_outlined, page: myPage())
   ];
 
+  Home2State() {
+    tabs.asMap().forEach((index, details) {
+      details.setIndex(index);
+    });
+  }
+
   void _selectTab(int index) {
     if (index == currentTab) {
       tabs[index].key.currentState.popUntil((route) => route.isFirst);
@@ -191,7 +198,10 @@ class Home2State extends State<Home2> {
             index: currentTab,
             children: tabs.map((e) => e.page).toList(),
           ),
-          // bottomNavigationBar: BottomNavigation(),
+          bottomNavigationBar: bottomNavigationBar(
+            onSelectTab: _selectTab,
+            tabs: tabs,
+          ),
         ));
   }
 }
