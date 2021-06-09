@@ -3,6 +3,10 @@ import 'package:plz/view/home.dart';
 import 'package:plz/view/splash.dart';
 
 class settingAppPage extends StatelessWidget {
+  final String title;
+
+  const settingAppPage({Key key, this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

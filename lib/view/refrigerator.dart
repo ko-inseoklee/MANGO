@@ -9,6 +9,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class refrigeratorPage extends StatefulWidget {
+  final String title;
+
+  const refrigeratorPage({Key key, this.title}) : super(key: key);
+
   @override
   _refrigeratorPageState createState() => _refrigeratorPageState();
 }
@@ -25,6 +29,10 @@ class _refrigeratorPageState extends State<refrigeratorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        centerTitle: true,
+      ),
       body: Center(
         child: Text('냉장고 페이지'),
       ),

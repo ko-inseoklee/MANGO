@@ -8,6 +8,10 @@ import 'package:plz/view/widget/settings/appSettings.dart';
 import 'package:provider/provider.dart';
 
 class myPage extends StatefulWidget {
+  final String title;
+
+  const myPage({Key key, this.title}) : super(key: key);
+
   @override
   _myPageState createState() => _myPageState();
 }
@@ -24,6 +28,10 @@ class _myPageState extends State<myPage> {
         return Center(child: CircularProgressIndicator());
       } else {
         return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+            centerTitle: true,
+          ),
           body: Center(
             child: Column(
               children: [
@@ -169,8 +177,10 @@ class _myPageState extends State<myPage> {
                   size: 34 * deviceWidth / prototypeWidth,
                   color: Theme.of(context).accentColor,
                 ),
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => settingAppPage())),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => settingAppPage(
+                          title: "앱 설정",
+                        ))),
               ),
             ),
             Container(

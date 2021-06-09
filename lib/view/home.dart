@@ -153,16 +153,35 @@ class Home2State extends State<Home2> {
 
   final List<TabItem> tabs = [
     TabItem(
-        tabName: "냉장고", icon: Icons.kitchen_outlined, page: refrigeratorPage()),
+        tabName: "냉장고",
+        icon: Icons.kitchen_outlined,
+        page: refrigeratorPage(
+          title: "냉장고",
+        )),
     TabItem(
-        tabName: "마켓", icon: Icons.shopping_cart_outlined, page: marketPage()),
+        tabName: "마켓",
+        icon: Icons.shopping_cart_outlined,
+        page: marketPage(
+          title: "마켓",
+        )),
     TabItem(
-        tabName: "거래광장", icon: Icons.local_mall_outlined, page: tradePage()),
+        tabName: "거래광장",
+        icon: Icons.local_mall_outlined,
+        page: tradePage(
+          title: "거래광장",
+        )),
     TabItem(
         tabName: "냉장고 분석",
         icon: Icons.fact_check_outlined,
-        page: nutritionPage()),
-    TabItem(tabName: "마이 페이지", icon: Icons.account_box_outlined, page: myPage())
+        page: nutritionPage(
+          title: "냉장고 분석",
+        )),
+    TabItem(
+        tabName: "마이 페이지",
+        icon: Icons.account_box_outlined,
+        page: myPage(
+          title: "마이 페이지",
+        ))
   ];
 
   Home2State() {
