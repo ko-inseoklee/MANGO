@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plz/controller/authentication.dart';
 import 'package:plz/controller/userController.dart';
@@ -15,12 +16,21 @@ class hasUserDataPage extends StatelessWidget {
     return FutureBuilder(
         future: UserViewModel().findUserSnapshot(_auth.user.uid),
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          if (snapshot.hasData == false) {
-            return addUserInfoPage();
+          if (snapshot.connectionState == null) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           } else if (snapshot.hasError) {
-            return Padding();
+            return addUserInfoPage();
+          } else if (snapshot.hasData == true) {
+            return StreamProvider<DocumentSnapshot>(
+              create: (_) => user(uid: _auth.user.uid).snapshot,
+              builder: (context, child) {
+                return homePage();
+              },
+            );
           } else {
-            return homePage();
+            return addUserInfoPage();
           }
         });
   }

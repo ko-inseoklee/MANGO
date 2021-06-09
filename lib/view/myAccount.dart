@@ -8,6 +8,10 @@ import 'package:plz/view/widget/settings/appSettings.dart';
 import 'package:provider/provider.dart';
 
 class myPage extends StatefulWidget {
+  final String title;
+
+  const myPage({Key key, this.title}) : super(key: key);
+
   @override
   _myPageState createState() => _myPageState();
 }
@@ -24,6 +28,10 @@ class _myPageState extends State<myPage> {
         return Center(child: CircularProgressIndicator());
       } else {
         return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+            centerTitle: true,
+          ),
           body: Center(
             child: Column(
               children: [
@@ -158,19 +166,22 @@ class _myPageState extends State<myPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(6.0),
+              padding: EdgeInsets.all(4.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Orange50,
               ),
               child: IconButton(
+                alignment: Alignment.center,
                 icon: Icon(
                   menu.iconData,
-                  size: 34 * deviceWidth / prototypeWidth,
+                  size: 28 * deviceWidth / prototypeWidth,
                   color: Theme.of(context).accentColor,
                 ),
-                onPressed: () =>
-                    print(Navigator.pushNamed(context, menu.navRef)),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => settingAppPage(
+                          title: "앱 설정",
+                        ))),
               ),
             ),
             Container(
