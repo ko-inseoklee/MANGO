@@ -166,15 +166,16 @@ class _myPageState extends State<myPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(6.0),
+              padding: EdgeInsets.all(4.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Orange50,
               ),
               child: IconButton(
+                alignment: Alignment.center,
                 icon: Icon(
                   menu.iconData,
-                  size: 34 * deviceWidth / prototypeWidth,
+                  size: 28 * deviceWidth / prototypeWidth,
                   color: Theme.of(context).accentColor,
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(

@@ -25,7 +25,7 @@ class TabItem {
   Widget get page {
     return Visibility(
       //TODO: AppState.currentTab => Custom to homepage.
-      visible: _index == Home2State.currentTab,
+      visible: _index == homePageState.currentTab,
       maintainState: true,
       child: Navigator(
         key: key,

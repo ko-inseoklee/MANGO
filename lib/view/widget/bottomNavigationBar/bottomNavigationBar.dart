@@ -16,14 +16,17 @@ class bottomNavigationBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: tabs
           .map((tab) => _buildBottomTab(
-              index: tab.getIndex(), icon: tab.icon, tabName: tab.tabName))
+              index: tab.getIndex(),
+              icon: tab.icon,
+              tabName: tab.tabName,
+              context: context))
           .toList(),
       onTap: (index) => onSelectTab(index),
     );
   }
 
   BottomNavigationBarItem _buildBottomTab(
-      {int index, IconData icon, String tabName}) {
+      {int index, IconData icon, String tabName, BuildContext context}) {
     return BottomNavigationBarItem(
         icon: Icon(
           icon,
@@ -31,11 +34,13 @@ class bottomNavigationBar extends StatelessWidget {
         ),
         title: Text(
           tabName,
-          style: TextStyle(color: MangoBlack),
+          style: TextStyle(
+              color: _tabColor(index: index),
+              fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
         ));
   }
 
   Color _tabColor({int index}) {
-    return Home2State.currentTab == index ? Orange400 : MangoDisabledColor;
+    return homePageState.currentTab == index ? Orange400 : MangoDisabledColor;
   }
 }

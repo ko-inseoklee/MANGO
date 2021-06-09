@@ -20,7 +20,6 @@ class mangoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<Authentication>(
       create: (_) => Authentication(),
-      // StreamProvider<User>(create: (_) => UserViewModel().user),
       child: MaterialApp(
         title: 'Mango - manage dietary life, test',
         home: splashPage(),

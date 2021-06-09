@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plz/controller/authentication.dart';
+import 'package:plz/model/user.dart';
 import 'package:plz/view/splash.dart';
+import 'package:provider/provider.dart';
 
 import '../colors.dart';
 import '../routes.dart';
+import 'home.dart';
 
 class guidePage extends StatefulWidget {
   @override
@@ -26,6 +31,8 @@ class _guidePageState extends State<guidePage> {
 
   @override
   Widget build(BuildContext context) {
+    var _auth = Provider.of<Authentication>(context);
+
     return PageView.builder(
       scrollDirection: Axis.horizontal,
       controller: PageController(initialPage: 0),
@@ -46,14 +53,35 @@ class _guidePageState extends State<guidePage> {
                 index == imgList.length - 1
                     ? ButtonTheme(
                         child: RaisedButton(
-                          onPressed: () =>
-                              Navigator.popAndPushNamed(context, HOME),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (_) {
+                              return StreamProvider<DocumentSnapshot>(
+                                create: (_) =>
+                                    user(uid: _auth.user.uid).snapshot,
+                                builder: (context, child) {
+                                  return homePage();
+                                },
+                              );
+                            }));
+                          },
                           child: Text('MANGO 시작하기'),
                         ),
                       )
                     : FlatButton(
-                        onPressed: () =>
-                            Navigator.popAndPushNamed(context, HOME),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) {
+                            return StreamProvider<DocumentSnapshot>(
+                              create: (_) => user(uid: _auth.user.uid).snapshot,
+                              builder: (context, child) {
+                                return homePage();
+                              },
+                            );
+                          }));
+                        },
                         child: Text('Skip'))
               ],
             ),

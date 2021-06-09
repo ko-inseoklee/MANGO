@@ -21,14 +21,12 @@ class hasUserDataPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return addUserInfoPage();
           } else if (snapshot.hasData == true) {
             return StreamProvider<DocumentSnapshot>(
               create: (_) => user(uid: _auth.user.uid).snapshot,
               builder: (context, child) {
-                return Home2();
+                return homePage();
               },
             );
           } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plz/view/home.dart';
+import 'package:plz/controller/authentication.dart';
 import 'package:plz/view/splash.dart';
+import 'package:provider/provider.dart';
 
 class settingAppPage extends StatelessWidget {
   final String title;
@@ -9,6 +10,8 @@ class settingAppPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _auth = Provider.of<Authentication>(context);
+
     return Scaffold(
         appBar: AppBar(
           title: Text('앱 설정'),
@@ -42,7 +45,13 @@ class settingAppPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [Text('기타')],
+                children: [
+                  Text('기타'),
+                  ListTile(
+                    title: Text("로그아웃"),
+                    onTap: () async => _auth.signOut(),
+                  )
+                ],
               ),
             ),
           ]),
