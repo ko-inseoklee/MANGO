@@ -22,7 +22,7 @@ class mangoApp extends StatelessWidget {
       create: (_) => Authentication(),
       // StreamProvider<User>(create: (_) => UserViewModel().user),
       child: MaterialApp(
-        title: 'Mango - manage dietary life',
+        title: 'Mango - manage dietary life, test',
         home: splashPage(),
         // initialRoute: SPLASH,
         theme: _mangoTheme,
