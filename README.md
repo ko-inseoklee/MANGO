@@ -15,6 +15,9 @@ A new Flutter application.
         - Refrigerator Document 생성.
     - MyAccount
         - Image 수정하는 기능 추가(public하게 추가. 등록, 교환 등에서도 쓰일 예정이기 때문에.)
+        
+    - Global
+        - 엑셀파일 불러오기
     
 ## Dev Notify
     - IOS
