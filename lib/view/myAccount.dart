@@ -169,8 +169,8 @@ class _myPageState extends State<myPage> {
                   size: 34 * deviceWidth / prototypeWidth,
                   color: Theme.of(context).accentColor,
                 ),
-                onPressed: () =>
-                    print(Navigator.pushNamed(context, menu.navRef)),
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => settingAppPage())),
               ),
             ),
             Container(

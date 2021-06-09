@@ -19,6 +19,7 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
   int selectedIndex = 0;
+  String pageName = REFRIGERATOR;
 
   @override
   void initState() {
@@ -34,24 +35,18 @@ class _homePageState extends State<homePage> {
 
   @override
   Widget build(BuildContext context) {
-    var _user = Provider.of<Authentication>(context);
-
-    return StreamProvider<DocumentSnapshot>(
-      create: (_) => UserViewModel().getUser(_user.user.uid),
-      builder: (context, child) {
-        return Scaffold(
-          backgroundColor: MangoWhite,
-          appBar: AppBar(
-            title: Text(_items[selectedIdx].itemName),
-            centerTitle: true,
-          ),
-          body: pages[selectedIdx],
-          bottomNavigationBar: bottomAppbar(),
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: Theme.of(context).accentColor,
-              child: Icon(Icons.add)),
-        );
-      },
+    // var _user = Provider.of<DocumentSnapshot>(context);
+    return Scaffold(
+      backgroundColor: MangoWhite,
+      appBar: AppBar(
+        title: Text(_items[selectedIdx].itemName),
+        centerTitle: true,
+      ),
+      body: pages[selectedIdx],
+      bottomNavigationBar: bottomAppbar(),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).accentColor,
+          child: Icon(Icons.add)),
     );
   }
 
@@ -113,7 +108,6 @@ class _homePageState extends State<homePage> {
             onPressed: () {
               setState(() {
                 selectedIdx = item.idx;
-                print(selectedIdx);
               });
             },
             child: Column(

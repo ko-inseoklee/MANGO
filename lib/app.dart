@@ -18,15 +18,13 @@ import 'model/user.dart';
 class mangoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<Authentication>(create: (_) => Authentication()),
-        // StreamProvider<User>(create: (_) => UserViewModel().user),
-      ],
+    return ChangeNotifierProvider<Authentication>(
+      create: (_) => Authentication(),
+      // StreamProvider<User>(create: (_) => UserViewModel().user),
       child: MaterialApp(
         title: 'Mango - manage dietary life',
-        home: homePage(),
-        initialRoute: SPLASH,
+        home: splashPage(),
+        // initialRoute: SPLASH,
         theme: _mangoTheme,
         onGenerateRoute: routers.generateRoute,
       ),

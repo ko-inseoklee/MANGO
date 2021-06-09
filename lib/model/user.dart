@@ -49,3 +49,26 @@ class User {
         roomTempAlarm = snapshot.data()['room_temp_shelf_life_alarm'],
         reference = snapshot.reference;
 }
+
+final userCollection = 'User';
+
+class user {
+  String uid;
+
+  user({this.uid});
+
+  Stream<DocumentSnapshot> get snapshot => FirebaseFirestore.instance
+      .collection(userCollection)
+      .doc(uid)
+      .get()
+      .asStream();
+
+  Stream<DocumentSnapshot> getUser(String uid) {
+    var stream = FirebaseFirestore.instance
+        .collection(userCollection)
+        .doc(uid)
+        .get()
+        .asStream();
+    return stream;
+  }
+}

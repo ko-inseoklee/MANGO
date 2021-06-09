@@ -240,7 +240,6 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                       } else {
                         setState(() {
                           alarmIdx++;
-                          print(alarmIdx);
                         });
                       }
                     },
@@ -426,7 +425,6 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                       _roomTempAlarm = int.parse(val);
                     }
                   },
-                  onSaved: (val) => print(val),
                 ),
               )
             ],
