@@ -9,6 +9,7 @@ import 'package:plz/view/nutrition.dart';
 import 'package:plz/view/refrigerator.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/view/trade.dart';
+import 'package:plz/view/widget/settings/tabItem.dart';
 import 'package:provider/provider.dart';
 import '../routes.dart';
 
@@ -139,4 +140,58 @@ class bottomItem {
   String navRef;
 
   bottomItem({this.itemName, this.iconData, this.navRef, this.idx});
+}
+
+class Home2 extends StatefulWidget {
+  @override
+  Home2State createState() => Home2State();
+}
+
+class Home2State extends State<Home2> {
+  static int currentTab = 0;
+
+  final List<TabItem> tabs = [
+    TabItem(
+        tabName: "냉장고", icon: Icons.kitchen_outlined, page: refrigeratorPage()),
+    TabItem(
+        tabName: "마켓", icon: Icons.shopping_cart_outlined, page: marketPage()),
+    TabItem(
+        tabName: "거래광장", icon: Icons.local_mall_outlined, page: tradePage()),
+    TabItem(
+        tabName: "냉장고 분석",
+        icon: Icons.fact_check_outlined,
+        page: nutritionPage()),
+    TabItem(tabName: "마이 페이지", icon: Icons.account_box_outlined, page: myPage())
+  ];
+
+  void _selectTab(int index) {
+    if (index == currentTab) {
+      tabs[index].key.currentState.popUntil((route) => route.isFirst);
+    } else {
+      setState(() => currentTab = index);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: () async {
+          final isFirstRouteInCurrentTab =
+              !await tabs[currentTab].key.currentState.maybePop();
+          if (isFirstRouteInCurrentTab) {
+            if (currentTab != 0) {
+              _selectTab(0);
+              return false;
+            }
+          }
+          return isFirstRouteInCurrentTab;
+        },
+        child: Scaffold(
+          body: IndexedStack(
+            index: currentTab,
+            children: tabs.map((e) => e.page).toList(),
+          ),
+          // bottomNavigationBar: BottomNavigation(),
+        ));
+  }
 }

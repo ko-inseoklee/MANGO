@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plz/view/home.dart';
 
 class TabItem {
   final String tabName;
@@ -22,7 +23,7 @@ class TabItem {
   Widget get page {
     return Visibility(
       //TODO: AppState.currentTab => Custom to homepage.
-      // visible: _index == ,
+      visible: _index == Home2State.currentTab,
       maintainState: true,
       child: Navigator(
         key: key,
