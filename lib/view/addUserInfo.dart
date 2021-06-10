@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:plz/colors.dart';
 import 'package:plz/controller/authentication.dart';
 import 'package:plz/controller/userController.dart';
+import 'package:plz/controller/refrigeratorController.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';
@@ -50,6 +51,7 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
   bool _isFroShelf = true;
   int _roomTempAlarm = 0;
   bool _isRTShelf = true;
+  String uuid;
 
   @override
   Widget build(BuildContext context) {
@@ -223,20 +225,23 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                     color: Theme.of(context).accentColor,
                     onPressed: () async {
                       if (alarmIdx == 2) {
+                        uuid = Uuid().v4().toString();
+
                         await makeUserInformation(
-                                _auth.user.uid,
-                                _userName,
-                                _auth.user.metadata.creationTime,
-                                _auth.user.metadata.lastSignInTime,
-                                Uuid().v4().toString(),
-                                _refrigerationAlarm,
-                                _isRefShelf,
-                                _frozenAlarm,
-                                _isFroShelf,
-                                _roomTempAlarm,
-                                _isRTShelf)
-                            .then((value) =>
-                                Navigator.popAndPushNamed(context, GUIDE));
+                            _auth.user.uid,
+                            _userName,
+                            _auth.user.metadata.creationTime,
+                            _auth.user.metadata.lastSignInTime,
+                            uuid,
+                            _refrigerationAlarm,
+                            _isRefShelf,
+                            _frozenAlarm,
+                            _isFroShelf,
+                            _roomTempAlarm,
+                            _isRTShelf);
+                        await refrigeratorController()
+                            .makeRefInfoDocument(refID: uuid);
+                        Navigator.popAndPushNamed(context, GUIDE);
                       } else {
                         setState(() {
                           alarmIdx++;
