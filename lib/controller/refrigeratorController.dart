@@ -22,4 +22,12 @@ class refrigeratorController {
       refrigeratorID: refID,
     });
   }
+
+  Future<void> deleteRefrigerator({String refID}) async {
+    await FirebaseFirestore.instance
+        .collection(refrigeratorCollection)
+        .doc(refID)
+        .delete()
+        .then((value) => print("delete success"));
+  }
 }

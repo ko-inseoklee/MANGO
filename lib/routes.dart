@@ -10,8 +10,8 @@ import 'package:plz/view/myAccount.dart';
 import 'package:plz/view/nutrition.dart';
 import 'package:plz/view/refrigerator.dart';
 import 'package:plz/view/trade.dart';
-import 'package:plz/view/widget/settings/alarmSettings.dart';
-import 'package:plz/view/widget/settings/appSettings.dart';
+import 'package:plz/view/settings/alarmSettings.dart';
+import 'package:plz/view/settings/appSetting/appSettings.dart';
 import 'package:plz/view/splash.dart';
 
 const ADDUSERINFO = '/adduserinfo';

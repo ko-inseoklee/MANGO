@@ -24,6 +24,14 @@ class UserViewModel {
         .asStream();
     return stream;
   }
+
+  Future<void> deleteUser({String uid}) async {
+    await FirebaseFirestore.instance
+        .collection(userCollection)
+        .doc(uid)
+        .delete()
+        .then((value) => print("delete success"));
+  }
 }
 
 Future<void> makeUserInformation(

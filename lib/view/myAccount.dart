@@ -4,7 +4,8 @@ import 'package:plz/colors.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';
-import 'package:plz/view/widget/settings/appSettings.dart';
+import 'package:plz/view/settings/appSetting/appSettings.dart';
+import 'package:plz/view/widget/setting/settingMenu.dart';
 import 'package:provider/provider.dart';
 
 class myPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _myPageState extends State<myPage> {
             title: Text(widget.title),
             centerTitle: true,
           ),
+          backgroundColor: MangoWhite,
           body: Center(
             child: Column(
               children: [
@@ -98,23 +100,13 @@ class _myPageState extends State<myPage> {
                         7 * deviceWidth / prototypeWidth,
                         0),
                     children: [
-                      Container(
-                        child: ListTile(
-                          title: Text('자주 묻는 질문'),
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          bottom: BorderSide(color: MangoDisabledColor),
-                        )),
+                      settingMenu(
+                        menuName: "자주 묻는 질문",
+                        onTap: () {},
                       ),
-                      Container(
-                        child: ListTile(
-                          title: Text('공지사항'),
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          bottom: BorderSide(color: MangoDisabledColor),
-                        )),
+                      settingMenu(
+                        menuName: "공지사항",
+                        onTap: () {},
                       ),
                     ],
                   ),
