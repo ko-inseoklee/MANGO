@@ -22,6 +22,7 @@ A new Flutter application.
     - Global
         - 엑셀파일 불러오기
         - showDialog Customizing - 버튼 추가, snackbar 추가.
+        - Push notification
     
 ## Dev Notify
     - IOS

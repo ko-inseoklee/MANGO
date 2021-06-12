@@ -4,14 +4,16 @@ import 'package:plz/colors.dart';
 class mangoDialog extends StatefulWidget {
   final String dialogTitle;
   final String contentText;
-
   final VoidCallback onTapOK;
+  @required
+  final bool hasOK;
 
   const mangoDialog(
       {Key key,
       @required this.dialogTitle,
       @required this.contentText,
-      @required this.onTapOK});
+      @required this.onTapOK,
+      this.hasOK});
 
   @override
   _mangoDialogState createState() => _mangoDialogState();
@@ -24,9 +26,11 @@ class _mangoDialogState extends State<mangoDialog> {
       title: Text(widget.dialogTitle),
       content: Text(widget.contentText),
       actions: [
-        FlatButton(
-            child: Text('확인', style: TextStyle(color: Orange400)),
-            onPressed: widget.onTapOK),
+        widget.hasOK
+            ? FlatButton(
+                child: Text('확인', style: TextStyle(color: Orange400)),
+                onPressed: widget.onTapOK)
+            : Text(""),
         FlatButton(
           child: Text('취소', style: TextStyle(color: MangoDisabledColor)),
           onPressed: () {
@@ -36,4 +40,14 @@ class _mangoDialogState extends State<mangoDialog> {
       ],
     );
   }
+}
+
+void comingSoon(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return mangoDialog(
+            dialogTitle: "Coming soon", hasOK: false, contentText: "준비 중입니다.");
+      });
 }

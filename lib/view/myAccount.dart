@@ -5,6 +5,7 @@ import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/view/settings/appSetting/appSettings.dart';
+import 'package:plz/view/widget/dialog/dialog.dart';
 import 'package:plz/view/widget/setting/settingMenu.dart';
 import 'package:provider/provider.dart';
 
@@ -102,11 +103,15 @@ class _myPageState extends State<myPage> {
                     children: [
                       settingMenu(
                         menuName: "자주 묻는 질문",
-                        onTap: () {},
+                        onTap: () {
+                          comingSoon(context);
+                        },
                       ),
                       settingMenu(
                         menuName: "공지사항",
-                        onTap: () {},
+                        onTap: () {
+                          comingSoon(context);
+                        },
                       ),
                     ],
                   ),
@@ -170,10 +175,13 @@ class _myPageState extends State<myPage> {
                   size: 28 * deviceWidth / prototypeWidth,
                   color: Theme.of(context).accentColor,
                 ),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => settingAppPage(
-                          title: "앱 설정",
-                        ))),
+                //TODO: condition should be deleted after make certain contents.
+                onPressed: () => menu.menuName == '앱 설정'
+                    ? Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => settingAppPage(
+                              title: "앱 설정",
+                            )))
+                    : comingSoon(context),
               ),
             ),
             Container(

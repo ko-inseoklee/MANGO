@@ -56,15 +56,21 @@ class settingAppPage extends StatelessWidget {
                   ),
                   settingMenu(
                     menuName: "계정/정보 관리",
-                    onTap: () {},
+                    onTap: () {
+                      comingSoon(context);
+                    },
                   ),
                   settingMenu(
                     menuName: "차단 사용자 관리",
-                    onTap: () {},
+                    onTap: () {
+                      comingSoon(context);
+                    },
                   ),
                   settingMenu(
                     menuName: "기타 설정",
-                    onTap: () {},
+                    onTap: () {
+                      comingSoon(context);
+                    },
                   ),
                 ],
               ),
@@ -87,15 +93,21 @@ class settingAppPage extends StatelessWidget {
                   ),
                   settingMenu(
                     menuName: "언어 설정",
-                    onTap: () {},
+                    onTap: () {
+                      comingSoon(context);
+                    },
                   ),
                   settingMenu(
                     menuName: "캐시 데이터 삭제",
-                    onTap: () {},
+                    onTap: () {
+                      comingSoon(context);
+                    },
                   ),
                   settingMenu(
                     menuName: "버전 정보",
-                    onTap: () {},
+                    onTap: () {
+                      comingSoon(context);
+                    },
                   ),
                   settingMenu(
                     menuName: "로그아웃",
@@ -115,6 +127,7 @@ class settingAppPage extends StatelessWidget {
                             return mangoDialog(
                                 dialogTitle: "회원탈퇴",
                                 contentText: "정말 탈퇴하시겠습니까?",
+                                hasOK: true,
                                 onTapOK: () async {
                                   await refrigeratorController()
                                       .deleteRefrigerator(
