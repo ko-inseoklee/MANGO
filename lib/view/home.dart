@@ -1,4 +1,9 @@
+import 'dart:typed_data';
+
+import 'package:bottom_sheet/bottom_sheet.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:plz/view/market.dart';
 import 'package:plz/view/myAccount.dart';
 import 'package:plz/view/nutrition.dart';
@@ -6,6 +11,7 @@ import 'package:plz/view/refrigerator.dart';
 import 'package:plz/view/trade.dart';
 import 'package:plz/view/widget/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:plz/view/widget/bottomNavigationBar/tabItem.dart';
+import 'package:plz/view/widget/dialog/dialog.dart';
 
 class homePage extends StatefulWidget {
   @override
@@ -86,6 +92,9 @@ class homePageState extends State<homePage> {
             tabs: tabs,
           ),
           floatingActionButton: FloatingActionButton(
+              onPressed: () async {
+                comingSoon(context);
+              },
               backgroundColor: Theme.of(context).accentColor,
               child: Icon(Icons.add)),
         ));
