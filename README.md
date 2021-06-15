@@ -9,20 +9,21 @@ A new Flutter application.
     - AddInfo
         - Use Phone number Authentication.
         - Set constraint
-            - 이름 설정 제한
+            - 이름 설정 제한 수정
             - 알림 주기 설정 시 다른 칸은 터치가 되지 않도록.
             - 데이터 설정 이전에 다음 페이지로 넘어갈 수 없도록.
         - 등록일 기준: 전 -> 후로 변경
     - MyAccount
         - Image 수정하는 기능 추가(public하게 추가. 등록, 교환 등에서도 쓰일 예정이기 때문에)
-        - 앱 설정 Container -> ListView
-        
+        - 알람설정 -> dropdown menu 및 데이터 처리.
+        - 알람설정 -> Animated로 변경인
     - Guide
         - 페이지 넘어갈 때 슬라이더 넘어가지 않도록
     - Global
         - 엑셀파일 불러오기
         - showDialog Customizing - 버튼 추가, snackbar 추가.
         - Push notification
+        - FAB 컴포넌트 완료 -> 기본 디자
     
 ## Dev Notify
     - IOS
