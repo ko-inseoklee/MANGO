@@ -7,9 +7,14 @@ class settingMenu extends StatefulWidget {
   final String menuName;
   final VoidCallback onTap;
   final Widget trailing;
+  final int trailingWidth;
 
   const settingMenu(
-      {Key key, @required this.menuName, @required this.onTap, this.trailing})
+      {Key key,
+      @required this.menuName,
+      @required this.onTap,
+      this.trailing,
+      this.trailingWidth})
       : super(key: key);
 
   @override
@@ -37,11 +42,14 @@ class _settingMenuState extends State<settingMenu> {
                 textAlign: TextAlign.left,
               ),
               onTap: widget.onTap,
-              trailing: Container(
-                width: 60 * deviceWidth / prototypeWidth,
-                alignment: Alignment.center,
-                child: widget.trailing,
-              ),
+              trailing: widget.trailing == null
+                  ? SizedBox()
+                  : Container(
+                      width:
+                          widget.trailingWidth * deviceWidth / prototypeWidth,
+                      alignment: Alignment.center,
+                      child: widget.trailing,
+                    ),
             ),
             Divider(
               height: 0.0,
