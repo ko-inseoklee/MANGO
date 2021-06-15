@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:plz/colors.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
+import 'package:plz/view/settings/alarmSettings.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/view/settings/appSetting/appSettings.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
@@ -181,7 +182,12 @@ class _myPageState extends State<myPage> {
                         builder: (context) => settingAppPage(
                               title: "앱 설정",
                             )))
-                    : comingSoon(context),
+                    : menu.menuName == '알림 관리'
+                        ? Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => settingAlarmPage(
+                                  title: "알림 관리",
+                                )))
+                        : comingSoon(context),
               ),
             ),
             Container(

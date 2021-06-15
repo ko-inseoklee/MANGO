@@ -22,22 +22,34 @@ class _settingMenuState extends State<settingMenu> {
     return Padding(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: Container(
-          height: 60 * deviceHeight / prototypeHeight,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(width: 1.0, color: MangoDisabledColor),
+            // decoration: BoxDecoration(
+            //   border: Border(
+            //     bottom: BorderSide(width: 1.0, color: MangoDisabledColor),
+            //   ),
+            //   color: Colors.white,
+            // ),
+            child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                widget.menuName,
+                style: Theme.of(context).textTheme.subtitle1,
+                textAlign: TextAlign.left,
+              ),
+              onTap: widget.onTap,
+              trailing: Container(
+                width: 60 * deviceWidth / prototypeWidth,
+                alignment: Alignment.center,
+                child: widget.trailing,
+              ),
             ),
-            color: Colors.white,
-          ),
-          child: ListTile(
-            title: Text(
-              widget.menuName,
-              style: Theme.of(context).textTheme.subtitle1,
-              textAlign: TextAlign.left,
-            ),
-            onTap: widget.onTap,
-            trailing: widget.trailing,
-          ),
-        ));
+            Divider(
+              height: 0.0,
+              thickness: 2.0,
+              indent: 10.0 * deviceWidth / prototypeWidth,
+              endIndent: 20.0 * deviceWidth / prototypeWidth,
+            )
+          ],
+        )));
   }
 }
