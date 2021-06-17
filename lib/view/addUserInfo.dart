@@ -1,9 +1,9 @@
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/services.dart';
 import 'package:plz/colors.dart';
-import 'package:plz/controller/authentication.dart';
-import 'package:plz/controller/userController.dart';
-import 'package:plz/controller/refrigeratorController.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/userViewModel.dart';
+import 'package:plz/viewModel/refrigeratorController.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';
@@ -226,10 +226,12 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                     onPressed: () async {
                       if (alarmIdx == 2) {
                         uuid = Uuid().v4().toString();
+                        String defaultImage = '-1';
 
                         await makeUserInformation(
                             _auth.user.uid,
                             _userName,
+                            defaultImage,
                             _auth.user.metadata.creationTime,
                             _auth.user.metadata.lastSignInTime,
                             uuid,

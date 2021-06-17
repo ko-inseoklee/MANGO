@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plz/controller/authentication.dart';
-import 'package:plz/controller/userController.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/addUserInfo.dart';
 import 'package:plz/view/guide.dart';
-import 'package:plz/view/hasUserData.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/landing.dart';
 import 'package:plz/view/login.dart';

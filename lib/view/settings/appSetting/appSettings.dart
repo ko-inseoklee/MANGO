@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plz/colors.dart';
-import 'package:plz/controller/authentication.dart';
-import 'package:plz/controller/refrigeratorController.dart';
-import 'package:plz/controller/userController.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/refrigeratorController.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/splash.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
@@ -17,13 +17,10 @@ class settingAppPage extends StatelessWidget {
 
   settingAppPage({Key key, this.title}) : super(key: key);
 
-  Authentication _auth;
-  DocumentSnapshot _user;
-
   @override
   Widget build(BuildContext context) {
-    _auth = Provider.of<Authentication>(context);
-    _user = Provider.of<DocumentSnapshot>(context);
+    final _user = context.watch<UserViewModel>();
+    final _auth = context.watch<Authentication>();
 
     return Scaffold(
         backgroundColor: MangoWhite,
@@ -130,7 +127,6 @@ class settingAppPage extends StatelessWidget {
                     settingMenu(
                       menuName: "로그아웃",
                       onTap: () async {
-                        print("s");
                         _auth.signOut();
                         Navigator.popAndPushNamed(context, LANDING);
                       },
@@ -147,15 +143,11 @@ class settingAppPage extends StatelessWidget {
                                   contentText: "정말 탈퇴하시겠습니까?",
                                   hasOK: true,
                                   onTapOK: () async {
-                                    print("삭제 시작..");
-                                    print(
-                                        'userdata == ${_user.data()['refrigerator_id']}');
                                     await refrigeratorController()
                                         .deleteRefrigerator(
-                                            refID: _user
-                                                .data()['refrigerator_id']);
+                                            refID: _user.user.refrigeratorID);
                                     await UserViewModel()
-                                        .deleteUser(uid: _user.data()['uid']);
+                                        .deleteUser(uid: _user.user.userID);
 
                                     await _auth.signOut();
                                     print("삭제 완료 및 로그아웃");
@@ -171,6 +163,4 @@ class settingAppPage extends StatelessWidget {
           ]),
         ));
   }
-
-  List<ListTile> _buildAppSettingTile() {}
 }

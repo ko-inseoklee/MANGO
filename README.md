@@ -16,7 +16,8 @@ A new Flutter application.
     - MyAccount
         - Image 수정하는 기능 추가(public하게 추가. 등록, 교환 등에서도 쓰일 예정이기 때문에)
         - 알람설정 -> dropdown menu 및 데이터 처리.
-        - 알람설정 -> Animated로 변경인
+        - 알람설정 -> Animated로 변경
+        - 알람설정 -> 각 리스트타일 위젯화.
     - Guide
         - 페이지 넘어갈 때 슬라이더 넘어가지 않도록
     - Global

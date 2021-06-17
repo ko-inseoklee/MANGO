@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plz/controller/authentication.dart';
+import 'package:plz/viewModel/authentication.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/splash.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../colors.dart';
-import '../routes.dart';
 import 'home.dart';
 
 class guidePage extends StatefulWidget {
@@ -32,6 +32,7 @@ class _guidePageState extends State<guidePage> {
   @override
   Widget build(BuildContext context) {
     var _auth = Provider.of<Authentication>(context);
+    context.read<UserViewModel>().findUserSnapshot(_auth.user.uid);
 
     return PageView.builder(
       scrollDirection: Axis.horizontal,
@@ -57,12 +58,9 @@ class _guidePageState extends State<guidePage> {
                             Navigator.pop(context);
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (_) {
-                              return StreamProvider<DocumentSnapshot>(
-                                create: (_) =>
-                                    user(uid: _auth.user.uid).snapshot,
-                                builder: (context, child) {
-                                  return homePage();
-                                },
+                              return ChangeNotifierProvider<UserViewModel>(
+                                create: (context) => UserViewModel(),
+                                child: homePage(),
                               );
                             }));
                           },
@@ -74,11 +72,9 @@ class _guidePageState extends State<guidePage> {
                           Navigator.pop(context);
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
-                            return StreamProvider<DocumentSnapshot>(
-                              create: (_) => user(uid: _auth.user.uid).snapshot,
-                              builder: (context, child) {
-                                return homePage();
-                              },
+                            return ChangeNotifierProvider<UserViewModel>(
+                              create: (context) => UserViewModel(),
+                              child: homePage(),
                             );
                           }));
                         },

@@ -8,6 +8,7 @@ import 'package:plz/view/splash.dart';
 import 'package:plz/view/settings/appSetting/appSettings.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
 import 'package:plz/view/widget/setting/settingMenu.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 class myPage extends StatefulWidget {
@@ -22,13 +23,14 @@ class myPage extends StatefulWidget {
 class _myPageState extends State<myPage> {
   @override
   Widget build(BuildContext context) {
-    // DocumentSnapshot _documentSnapshot = Provider.of<DocumentSnapshot>(context);
-    // User _user = new User.fromSnapshot(_documentSnapshot);
+    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+      // print(userViewModel.user.profileImageReference);
 
-    return Consumer<DocumentSnapshot>(
-        builder: (context, documentSnapshot, child) {
-      if (documentSnapshot == null) {
-        return Center(child: CircularProgressIndicator());
+      if (userViewModel.user == null) {
+        return Scaffold(
+            body: Center(
+          child: CircularProgressIndicator(),
+        ));
       } else {
         return Scaffold(
           appBar: AppBar(
@@ -57,7 +59,7 @@ class _myPageState extends State<myPage> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               fit: BoxFit.fill,
-                              image: documentSnapshot.data()['profile_image'] ==
+                              image: userViewModel.user.profileImageReference ==
                                       '-1'
                                   ? AssetImage('images/default_profile.png')
                                   : AssetImage('images/default_profile.png'),
@@ -69,7 +71,7 @@ class _myPageState extends State<myPage> {
                         padding: EdgeInsets.only(
                             left: 16.0 * deviceWidth / prototypeWidth),
                         child: Text(
-                          documentSnapshot.data()['name'],
+                          userViewModel.user.userName,
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       )
@@ -120,7 +122,6 @@ class _myPageState extends State<myPage> {
               ],
             ),
           ),
-          // bottomNavigationBar: bottomNaviagtionBar(),
         );
       }
     });

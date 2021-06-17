@@ -3,9 +3,9 @@ import 'dart:io' as io;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plz/colors.dart';
-import 'package:plz/controller/authentication.dart';
+import 'package:plz/viewModel/authentication.dart';
 import 'package:plz/view/splash.dart';
-import 'package:plz/controller/userController.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../routes.dart';

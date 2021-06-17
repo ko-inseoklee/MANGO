@@ -1,23 +1,12 @@
 import 'dart:io';
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:plz/controller/userController.dart';
-import 'package:plz/model/user.dart' as me;
 import 'package:plz/view/addUserInfo.dart';
-import 'package:plz/view/hasUserData.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/login.dart';
 import 'package:plz/view/splash.dart';
-import 'package:plz/controller/authentication.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
-
-// Comment: Back-up ver
-// FirebaseAuth auth = FirebaseAuth.instance;
-// CollectionReference userCollection =
-//     FirebaseFirestore.instance.collection('User');
 
 class landingPage extends StatefulWidget {
   @override
@@ -26,6 +15,7 @@ class landingPage extends StatefulWidget {
 
 class _landingPageState extends State<landingPage> {
   Authentication _auth;
+  Future<bool> hasData;
 
   @override
   void initState() {
@@ -35,15 +25,28 @@ class _landingPageState extends State<landingPage> {
 
   @override
   Widget build(BuildContext context) {
-    _auth = Provider.of<Authentication>(context);
-
+    _auth = context.watch<Authentication>();
     platform = Platform.isIOS;
 
-    return _auth.user == null ? loginPage() : hasUserDataPage();
+    if (_auth.user == null) {
+      return loginPage();
+    } else {
+      return FutureBuilder(
+          future: _auth.hasData(_auth.user.uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasData == false) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.data == false) {
+              return addUserInfoPage();
+            } else {
+              return ChangeNotifierProvider<UserViewModel>(
+                create: (context) => UserViewModel(),
+                child: homePage(),
+              );
+            }
+          });
+    }
   }
-
-  // checkDocExists(String docID) async {
-  //   DocumentSnapshot doc = await userCollection.doc(docID).get();
-  //   userExist = doc.exists;
-  // }
 }

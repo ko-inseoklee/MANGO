@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:plz/controller/userController.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:plz/model/user.dart' as me;
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
@@ -35,17 +35,6 @@ class Authentication with ChangeNotifier {
     }
     super.dispose();
   }
-
-  bool get isAuthenticated => user != null;
-
-  // me.User _userFromFirebase(User user) {
-  //   return user == null
-  //       ? null
-  //       : me.User.fromAuthentication(user.uid, null, user.metadata.creationTime,
-  //           user.metadata.lastSignInTime);
-  // }
-
-  // Stream<me.User> get user => _auth.authStateChanges().map(_userFromFirebase);
 
   Future<User> googleLogin() async {
     try {
@@ -159,8 +148,21 @@ class Authentication with ChangeNotifier {
   Future<void> signOut() {
     try {
       _auth.signOut();
+      notifyListeners();
     } catch (e) {
       print('exception error: $e');
     }
+  }
+
+  Future<bool> hasData(String uid) async {
+    bool result;
+
+    await FirebaseFirestore.instance
+        .collection('User')
+        .doc(uid)
+        .get()
+        .then((value) => result = value.exists);
+
+    return result;
   }
 }

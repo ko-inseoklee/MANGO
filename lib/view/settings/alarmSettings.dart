@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
+import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:plz/colors.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
 import 'package:plz/view/widget/setting/settingMenu.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../splash.dart';
@@ -22,18 +25,19 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
   bool isSwitched = false;
   bool isExpanded = false;
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   DocumentSnapshot _user;
 
-  int _refrigerationAlarm = 0;
-  bool _isRefShelf = true;
-  int _frozenAlarm = 0;
-  bool _isFroShelf = true;
-  int _roomTempAlarm = 0;
-  bool _isRTShelf = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('알람 관리'),
         centerTitle: true,
@@ -98,7 +102,7 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
                         child: Column(children: [
                           Expanded(
                               child: ListView(
-                            children: [setAlarmDuration()],
+                            children: [setAlarm()],
                           ))
                         ]),
                       )
@@ -115,14 +119,58 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
     );
   }
 
-  Widget setAlarmDuration() {
-    return Consumer<DocumentSnapshot>(builder: (context, user, child) {
-      _isRefShelf = user.data()[isRefAlarm];
-      _isFroShelf = user.data()[isFrozenAlarm];
-      _isRTShelf = user.data()[isRTAlarm];
-      _refrigerationAlarm = user.data()[refAlarmTime];
-      _frozenAlarm = user.data()[frozenAlarmTime];
-      _roomTempAlarm = user.data()[rTAlarmTime];
+  // Picker picker(BuildContext context) {
+  //   Picker picker = Picker(
+  //       textAlign: TextAlign.center,
+  //       adapter: PickerDataAdapter<int>(pickerdata: dateData()),
+  //       changeToFirst: false,
+  //       onConfirm: (Picker picker, List value) {
+  //         setState(() {
+  //           int val = picker.getSelectedValues()[0];
+  //           _refrigerationAlarm = val;
+  //
+  //           print(_refrigerationAlarm);
+  //         });
+  //       });
+  //   return picker;
+  // }
+  //
+  // void showPicker(BuildContext context, Picker picker) {
+  //   picker.showModal(this.context);
+  // }
+
+  List<int> dateData() {
+    List<int> result = [];
+    for (int i = 1; i <= 60; i++) {
+      result.add(i);
+    }
+
+    return result;
+  }
+}
+
+class setAlarm extends StatefulWidget {
+  @override
+  setAlarmState createState() => setAlarmState();
+}
+
+class setAlarmState extends State<setAlarm> {
+  int _refrigerationAlarm;
+  bool _isRefShelf;
+  int _frozenAlarm;
+  bool _isFroShelf;
+  int _roomTempAlarm;
+  bool _isRTShelf;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+      _isRefShelf = userViewModel.user.isRefShelf;
+      _isFroShelf = userViewModel.user.isFroShelf;
+      _isRTShelf = userViewModel.user.isRTShelf;
+      _refrigerationAlarm = userViewModel.user.refrigerationAlarm;
+      _frozenAlarm = userViewModel.user.frozenAlarm;
+      _roomTempAlarm = userViewModel.user.roomTempAlarm;
 
       return Column(children: [
         Container(
@@ -140,25 +188,37 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
           menuName: '유통기한 기준',
           onTap: null,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.roomTempAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.rTAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: _isRTShelf
-                    ? Text(
-                        _roomTempAlarm.toString() + "일 전",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: _isRTShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: _isRTShelf
+                        ? Text(
+                            _roomTempAlarm.toString() + "일 전",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: _isRTShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
           isActive: _isRTShelf,
         ),
@@ -166,25 +226,37 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
           menuName: '구매일 기준',
           onTap: null,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.roomTempAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: !_isRTShelf
-                    ? Text(
-                        _roomTempAlarm.toString() + "일 후",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: !_isRTShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: !_isRTShelf
+                        ? Text(
+                            _roomTempAlarm.toString() + "일 후",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: !_isRTShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
           isActive: !_isRTShelf,
         ),
@@ -204,25 +276,37 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
           onTap: null,
           isActive: _isRefShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: _isRefShelf
-                    ? Text(
-                        _refrigerationAlarm.toString() + "일 전",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: _isRefShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: _isRefShelf
+                        ? Text(
+                            _refrigerationAlarm.toString() + "일 전",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: _isRefShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
         settingMenu(
@@ -230,25 +314,37 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
           onTap: null,
           isActive: !_isRefShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: !_isRefShelf
-                    ? Text(
-                        _refrigerationAlarm.toString() + "일 후",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: !_isRefShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: !_isRefShelf
+                        ? Text(
+                            _refrigerationAlarm.toString() + "일 후",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: !_isRefShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
         Container(
@@ -267,25 +363,37 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
           onTap: null,
           isActive: _isFroShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: _isFroShelf
-                    ? Text(
-                        _frozenAlarm.toString() + "일 전",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: _isFroShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: _isFroShelf
+                        ? Text(
+                            _frozenAlarm.toString() + "일 전",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: _isFroShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
         settingMenu(
@@ -293,25 +401,37 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
           onTap: null,
           isActive: !_isFroShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: !_isFroShelf
-                    ? Text(
-                        _frozenAlarm.toString() + "일 후",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: !_isFroShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: !_isFroShelf
+                        ? Text(
+                            _frozenAlarm.toString() + "일 후",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: !_isFroShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
       ]);
