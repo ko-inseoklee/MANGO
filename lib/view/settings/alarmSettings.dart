@@ -160,31 +160,33 @@ class setAlarmState extends State<setAlarm> {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       return Column(children: [
         Container(
-          padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
-          child: Text(
-            '실온 제품',
-            style: Theme.of(context)
-                .textTheme
-                .subtitle2
-                .copyWith(color: Orange400, fontWeight: FontWeight.w700),
-          ),
-          alignment: Alignment.centerLeft,
-        ),
+            padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+            child: Row(
+              children: [
+                Text(
+                  '실온 제품',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+                ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.only(
+                      right: 30.0 * deviceWidth / prototypeWidth),
+                  child: RaisedButton(
+                    color: MangoBehindColor,
+                    onPressed: () {},
+                    child: Text('적용'),
+                  ),
+                )
+              ],
+            )),
         settingMenu(
           menuName: '유통기한 기준',
           onTap: () {
             if (!userViewModel.user.isRTShelf) {
-              showDialog(
-                  context: context,
-                  child: mangoDialog(
-                      dialogTitle: '알림 기준 변경',
-                      contentText: '알림 기준을 변경하시겠습니까?',
-                      hasOK: true,
-                      onTapOK: () {
-                        setState(() {
-                          userViewModel.isRoomTemp = true;
-                        });
-                      }));
+              userViewModel.isRoomTemp = true;
             }
           },
           trailing: FlatButton(
@@ -228,17 +230,7 @@ class setAlarmState extends State<setAlarm> {
           menuName: '구매일 기준',
           onTap: () {
             if (userViewModel.user.isRTShelf) {
-              showDialog(
-                  context: context,
-                  child: mangoDialog(
-                      dialogTitle: '알림 기준 변경',
-                      contentText: '알림 기준을 변경하시겠습니까?',
-                      hasOK: true,
-                      onTapOK: () {
-                        setState(() {
-                          userViewModel.isRoomTemp = false;
-                        });
-                      }));
+              userViewModel.isRoomTemp = false;
             }
           },
           trailing: FlatButton(
@@ -293,17 +285,7 @@ class setAlarmState extends State<setAlarm> {
           menuName: '유통기한 기준',
           onTap: () {
             if (!userViewModel.user.isRefShelf) {
-              showDialog(
-                  context: context,
-                  child: mangoDialog(
-                      dialogTitle: '알림 기준 변경',
-                      contentText: '알림 기준을 변경하시겠습니까?',
-                      hasOK: true,
-                      onTapOK: () {
-                        setState(() {
-                          userViewModel.isRefrigeration = true;
-                        });
-                      }));
+              userViewModel.isRefrigeration = true;
             }
           },
           isActive: userViewModel.user.isRefShelf,
@@ -348,17 +330,7 @@ class setAlarmState extends State<setAlarm> {
           menuName: '구매일 기준',
           onTap: () {
             if (userViewModel.user.isRefShelf) {
-              showDialog(
-                  context: context,
-                  child: mangoDialog(
-                      dialogTitle: '알림 기준 변경',
-                      contentText: '알림 기준을 변경하시겠습니까?',
-                      hasOK: true,
-                      onTapOK: () {
-                        setState(() {
-                          userViewModel.isRefrigeration = false;
-                        });
-                      }));
+              userViewModel.isRefrigeration = false;
             }
           },
           isActive: !userViewModel.user.isRefShelf,
@@ -414,17 +386,7 @@ class setAlarmState extends State<setAlarm> {
           menuName: '유통기한 기준',
           onTap: () {
             if (!userViewModel.user.isFroShelf) {
-              showDialog(
-                  context: context,
-                  child: mangoDialog(
-                      hasOK: true,
-                      dialogTitle: '알림 기준 변경',
-                      contentText: '알림 기준을 변경하시겠습니까?',
-                      onTapOK: () {
-                        setState(() {
-                          userViewModel.isFrozen = true;
-                        });
-                      }));
+              userViewModel.isFrozen = true;
             }
           },
           isActive: userViewModel.user.isFroShelf,
@@ -468,17 +430,7 @@ class setAlarmState extends State<setAlarm> {
           menuName: '구매일 기준',
           onTap: () {
             if (userViewModel.user.isFroShelf) {
-              showDialog(
-                  context: context,
-                  child: mangoDialog(
-                      dialogTitle: '알림 기준 변경',
-                      contentText: '알림 기준을 변경하시겠습니까?',
-                      hasOK: true,
-                      onTapOK: () {
-                        setState(() {
-                          userViewModel.isFrozen = false;
-                        });
-                      }));
+              userViewModel.isFrozen = false;
             }
           },
           isActive: !userViewModel.user.isFroShelf,
