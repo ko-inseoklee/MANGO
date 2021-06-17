@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:plz/routes.dart';
 
-import 'package:flutter/src/scheduler/ticker.dart';
 import '../colors.dart';
 
 var deviceWidth = 375.0;

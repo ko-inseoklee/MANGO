@@ -36,17 +36,6 @@ class Authentication with ChangeNotifier {
     super.dispose();
   }
 
-  bool get isAuthenticated => user != null;
-
-  // me.User _userFromFirebase(User user) {
-  //   return user == null
-  //       ? null
-  //       : me.User.fromAuthentication(user.uid, null, user.metadata.creationTime,
-  //           user.metadata.lastSignInTime);
-  // }
-
-  // Stream<me.User> get user => _auth.authStateChanges().map(_userFromFirebase);
-
   Future<User> googleLogin() async {
     try {
       UserCredential userCredential;
@@ -162,5 +151,17 @@ class Authentication with ChangeNotifier {
     } catch (e) {
       print('exception error: $e');
     }
+  }
+
+  Future<bool> hasData(String uid) async {
+    bool result;
+
+    await FirebaseFirestore.instance
+        .collection('User')
+        .doc(uid)
+        .get()
+        .then((value) => result = value.exists);
+
+    return result;
   }
 }

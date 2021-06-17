@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:plz/viewModel/authentication.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/splash.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../colors.dart';
-import '../routes.dart';
 import 'home.dart';
 
 class guidePage extends StatefulWidget {
@@ -57,12 +57,9 @@ class _guidePageState extends State<guidePage> {
                             Navigator.pop(context);
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (_) {
-                              return StreamProvider<DocumentSnapshot>(
-                                create: (_) =>
-                                    user(uid: _auth.user.uid).snapshot,
-                                builder: (context, child) {
-                                  return homePage();
-                                },
+                              return ChangeNotifierProvider<UserViewModel>(
+                                create: (context) => UserViewModel(),
+                                child: homePage(),
                               );
                             }));
                           },

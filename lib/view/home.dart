@@ -15,6 +15,9 @@ import 'package:plz/view/widget/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:plz/view/widget/bottomNavigationBar/floatingButtonAction.dart';
 import 'package:plz/view/widget/bottomNavigationBar/tabItem.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/userViewModel.dart';
+import 'package:provider/provider.dart';
 
 class homePage extends StatefulWidget {
   @override
@@ -72,7 +75,17 @@ class homePageState extends State<homePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<UserViewModel>(context);
+
+    // print(_user.uid);
+
     return WillPopScope(
         onWillPop: () async {
           final isFirstRouteInCurrentTab =

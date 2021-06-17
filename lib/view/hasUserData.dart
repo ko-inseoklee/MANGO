@@ -16,22 +16,30 @@ class hasUserDataPage extends StatelessWidget {
     return FutureBuilder(
         future: UserViewModel().findUserSnapshot(_auth.user.uid),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState == null) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return addUserInfoPage();
-          } else if (snapshot.hasData == true) {
-            return StreamProvider<DocumentSnapshot>(
-              create: (_) => user(uid: _auth.user.uid).snapshot,
-              builder: (context, child) {
-                return homePage();
-              },
-            );
-          } else {
-            return addUserInfoPage();
-          }
+          return ChangeNotifierProvider<UserViewModel>(
+            create: (context) => UserViewModel(),
+            child: homePage(),
+          );
+          // if (snapshot.connectionState == null) {
+          //   return Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // } else if (snapshot.hasError) {
+          //   return addUserInfoPage();
+          // } else if (snapshot.hasData == true) {
+          //   return ChangeNotifierProvider(
+          //     create: (context) => UserViewModel(),
+          //     child: homePage(),
+          //   );
+          //   // return StreamProvider<DocumentSnapshot>(
+          //   //   create: (_) => user(uid: _auth.user.uid).snapshot,
+          //   //   builder: (context, child) {
+          //   //     return homePage();
+          //   //   },
+          //   // );
+          // } else {
+          //   return addUserInfoPage();
+          // }
         });
   }
 }
