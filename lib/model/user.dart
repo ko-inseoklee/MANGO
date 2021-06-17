@@ -72,3 +72,11 @@ class user {
     return stream;
   }
 }
+
+//Field name of user collection for firebase.
+final isFrozenAlarm = 'frozen_is_shelf';
+final frozenAlarmTime = 'frozen_shelf_life_alarm';
+final isRefAlarm = 'refrigeration_is_shelf';
+final refAlarmTime = 'refrigeration_shelf_life_alarm';
+final isRTAlarm = 'room_temp_is_shelf';
+final rTAlarmTime = 'room_temp_shelf_life_alarm';

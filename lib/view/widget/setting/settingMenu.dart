@@ -8,13 +8,15 @@ class settingMenu extends StatefulWidget {
   final VoidCallback onTap;
   final Widget trailing;
   final int trailingWidth;
+  final bool isActive;
 
   const settingMenu(
       {Key key,
       @required this.menuName,
       @required this.onTap,
       this.trailing,
-      this.trailingWidth})
+      this.trailingWidth,
+      this.isActive = true})
       : super(key: key);
 
   @override
@@ -38,7 +40,9 @@ class _settingMenuState extends State<settingMenu> {
             ListTile(
               title: Text(
                 widget.menuName,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                      color: widget.isActive ? MangoBlack : MangoBehindColor,
+                    ),
                 textAlign: TextAlign.left,
               ),
               onTap: widget.onTap,

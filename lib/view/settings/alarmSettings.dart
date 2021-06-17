@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:plz/colors.dart';
+import 'package:plz/model/user.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
 import 'package:plz/view/widget/setting/settingMenu.dart';
+import 'package:provider/provider.dart';
 
 import '../splash.dart';
 
@@ -19,6 +22,15 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
   bool isSwitched = false;
   bool isExpanded = false;
 
+  DocumentSnapshot _user;
+
+  int _refrigerationAlarm = 0;
+  bool _isRefShelf = true;
+  int _frozenAlarm = 0;
+  bool _isFroShelf = true;
+  int _roomTempAlarm = 0;
+  bool _isRTShelf = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +38,7 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
         title: Text('알람 관리'),
         centerTitle: true,
       ),
+      backgroundColor: MangoWhite,
       body: Container(
         height: deviceHeight,
         width: deviceWidth,
@@ -37,10 +50,10 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
               Container(
                 child: Text(
                   '알림 설정',
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(fontWeight: FontWeight.w700, fontSize: 16.0),
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                      color: Orange400),
                 ),
                 padding: EdgeInsets.fromLTRB(
                     15, 20 * deviceWidth / prototypeWidth, 0, 0),
@@ -103,46 +116,205 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
   }
 
   Widget setAlarmDuration() {
-    return Column(children: [
-      Container(
-        padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
-        child: Text(
-          '실온 제품',
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+    return Consumer<DocumentSnapshot>(builder: (context, user, child) {
+      _isRefShelf = user.data()[isRefAlarm];
+      _isFroShelf = user.data()[isFrozenAlarm];
+      _isRTShelf = user.data()[isRTAlarm];
+      _refrigerationAlarm = user.data()[refAlarmTime];
+      _frozenAlarm = user.data()[frozenAlarmTime];
+      _roomTempAlarm = user.data()[rTAlarmTime];
+
+      return Column(children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+          child: Text(
+            '실온 제품',
+            style: Theme.of(context)
+                .textTheme
+                .subtitle2
+                .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+          ),
+          alignment: Alignment.centerLeft,
         ),
-        alignment: Alignment.centerLeft,
-      ),
-      settingMenu(menuName: '유통기한 기준', onTap: null),
-      settingMenu(menuName: '구매일 기준', onTap: null),
-      Container(
-        padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
-        child: Text(
-          '냉장 제품',
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+        settingMenu(
+          menuName: '유통기한 기준',
+          onTap: null,
+          trailing: FlatButton(
+              child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: _isRTShelf
+                    ? Text(
+                        _roomTempAlarm.toString() + "일 전",
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    : Text('-'),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: _isRTShelf ? MangoBlack : MangoBehindColor,
+                size: 18.0,
+              )
+            ],
+          )),
+          trailingWidth: 100,
+          isActive: _isRTShelf,
         ),
-        alignment: Alignment.centerLeft,
-      ),
-      settingMenu(menuName: '유통기한 기준', onTap: null),
-      settingMenu(menuName: '구매일 기준', onTap: null),
-      Container(
-        padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
-        child: Text(
-          '냉동 제품',
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+        settingMenu(
+          menuName: '구매일 기준',
+          onTap: null,
+          trailing: FlatButton(
+              child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: !_isRTShelf
+                    ? Text(
+                        _roomTempAlarm.toString() + "일 후",
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    : Text('-'),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: !_isRTShelf ? MangoBlack : MangoBehindColor,
+                size: 18.0,
+              )
+            ],
+          )),
+          trailingWidth: 100,
+          isActive: !_isRTShelf,
         ),
-        alignment: Alignment.centerLeft,
-      ),
-      settingMenu(menuName: '유통기한 기준', onTap: null),
-      settingMenu(menuName: '구매일 기준', onTap: null),
-    ]);
+        Container(
+          padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+          child: Text(
+            '냉장 제품',
+            style: Theme.of(context)
+                .textTheme
+                .subtitle2
+                .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+          ),
+          alignment: Alignment.centerLeft,
+        ),
+        settingMenu(
+          menuName: '유통기한 기준',
+          onTap: null,
+          isActive: _isRefShelf,
+          trailing: FlatButton(
+              child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: _isRefShelf
+                    ? Text(
+                        _refrigerationAlarm.toString() + "일 전",
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    : Text('-'),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: _isRefShelf ? MangoBlack : MangoBehindColor,
+                size: 18.0,
+              )
+            ],
+          )),
+          trailingWidth: 100,
+        ),
+        settingMenu(
+          menuName: '구매일 기준',
+          onTap: null,
+          isActive: !_isRefShelf,
+          trailing: FlatButton(
+              child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: !_isRefShelf
+                    ? Text(
+                        _refrigerationAlarm.toString() + "일 후",
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    : Text('-'),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: !_isRefShelf ? MangoBlack : MangoBehindColor,
+                size: 18.0,
+              )
+            ],
+          )),
+          trailingWidth: 100,
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+          child: Text(
+            '냉동 제품',
+            style: Theme.of(context)
+                .textTheme
+                .subtitle2
+                .copyWith(color: Orange400, fontWeight: FontWeight.w700),
+          ),
+          alignment: Alignment.centerLeft,
+        ),
+        settingMenu(
+          menuName: '유통기한 기준',
+          onTap: null,
+          isActive: _isFroShelf,
+          trailing: FlatButton(
+              child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: _isFroShelf
+                    ? Text(
+                        _frozenAlarm.toString() + "일 전",
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    : Text('-'),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: _isFroShelf ? MangoBlack : MangoBehindColor,
+                size: 18.0,
+              )
+            ],
+          )),
+          trailingWidth: 100,
+        ),
+        settingMenu(
+          menuName: '구매일 기준',
+          onTap: null,
+          isActive: !_isFroShelf,
+          trailing: FlatButton(
+              child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 50,
+                child: !_isFroShelf
+                    ? Text(
+                        _frozenAlarm.toString() + "일 후",
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    : Text('-'),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: !_isFroShelf ? MangoBlack : MangoBehindColor,
+                size: 18.0,
+              )
+            ],
+          )),
+          trailingWidth: 100,
+        ),
+      ]);
+    });
   }
 }

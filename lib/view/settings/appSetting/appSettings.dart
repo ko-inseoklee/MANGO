@@ -43,7 +43,9 @@ class settingAppPage extends StatelessWidget {
                     child: Text(
                       '사용자 설정',
                       style: Theme.of(context).textTheme.caption.copyWith(
-                          fontWeight: FontWeight.w700, fontSize: 14.0),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.0,
+                          color: Orange400),
                     ),
                     padding: EdgeInsets.fromLTRB(
                         20, 20 * deviceWidth / prototypeWidth, 0, 0),
@@ -89,10 +91,10 @@ class settingAppPage extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '기타',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(fontWeight: FontWeight.w700, fontSize: 14.0),
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.0,
+                        color: Orange400),
                   ),
                   padding: EdgeInsets.fromLTRB(
                       20, 20 * deviceWidth / prototypeWidth, 0, 0),
