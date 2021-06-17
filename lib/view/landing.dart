@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:plz/view/addUserInfo.dart';
-import 'package:plz/view/hasUserData.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/login.dart';
 import 'package:plz/view/splash.dart';
@@ -27,10 +26,9 @@ class _landingPageState extends State<landingPage> {
   @override
   Widget build(BuildContext context) {
     _auth = context.watch<Authentication>();
-
     platform = Platform.isIOS;
 
-    if (_auth == null) {
+    if (_auth.user == null) {
       return loginPage();
     } else {
       return FutureBuilder(
@@ -50,7 +48,5 @@ class _landingPageState extends State<landingPage> {
             }
           });
     }
-
-    // return _auth.user == null ? loginPage() : hasUserDataPage();
   }
 }

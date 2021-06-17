@@ -11,16 +11,16 @@ final rTAlarmTime = 'room_temp_shelf_life_alarm';
 class User {
   final String userID;
   final DateTime creationTime;
-  final DateTime lastSignIn;
-  final String profileImageReference;
-  final String userName;
   final String refrigeratorID;
-  final int refrigerationAlarm;
-  final bool isRefShelf;
-  final int frozenAlarm;
-  final bool isFroShelf;
-  final int roomTempAlarm;
-  final bool isRTShelf;
+  int refrigerationAlarm;
+  bool isRefShelf;
+  int frozenAlarm;
+  bool isFroShelf;
+  int roomTempAlarm;
+  bool isRTShelf;
+  DateTime lastSignIn;
+  String profileImageReference;
+  String userName;
   final DocumentReference reference;
 
   User(
@@ -42,12 +42,12 @@ class User {
       : assert(snapshot != null),
         userID = snapshot.id,
         userName = snapshot.data()['name'],
+        profileImageReference = snapshot.data()['profile_image'],
         creationTime = DateTime.fromMicrosecondsSinceEpoch(
             snapshot.data()['creation_time'].microsecondsSinceEpoch),
         refrigeratorID = snapshot.data()['refrigerator_id'],
         isFroShelf = snapshot.data()['frozen_is_shelf'],
         frozenAlarm = snapshot.data()['frozen_shelf_life_alarm'],
-        profileImageReference = snapshot.data()['profile_image'],
         lastSignIn = DateTime.fromMicrosecondsSinceEpoch(
             snapshot.data()['last_signed_time'].microsecondsSinceEpoch),
         isRefShelf = snapshot.data()['refrigeration_is_shelf'],

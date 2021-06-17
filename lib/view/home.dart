@@ -1,20 +1,12 @@
-import 'dart:typed_data';
-
-import 'package:bottom_sheet/bottom_sheet.dart';
-import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:plz/view/market.dart';
 import 'package:plz/view/myAccount.dart';
 import 'package:plz/view/nutrition.dart';
 import 'package:plz/view/refrigerator.dart';
-import 'package:plz/view/splash.dart';
 import 'package:plz/view/trade.dart';
 import 'package:plz/view/widget/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:plz/view/widget/bottomNavigationBar/floatingButtonAction.dart';
 import 'package:plz/view/widget/bottomNavigationBar/tabItem.dart';
-import 'package:plz/view/widget/dialog/dialog.dart';
 import 'package:plz/viewModel/authentication.dart';
 import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
@@ -82,9 +74,8 @@ class homePageState extends State<homePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _user = Provider.of<UserViewModel>(context);
-
-    // print(_user.uid);
+    final _auth = context.watch<Authentication>();
+    context.read<UserViewModel>().findUserSnapshot(_auth.user.uid);
 
     return WillPopScope(
         onWillPop: () async {
@@ -112,16 +103,6 @@ class homePageState extends State<homePage> {
                 showDialog(
                     context: context,
                     builder: (context) => floatingButtonAction());
-
-                // showMaterialModalBottomSheet(
-                //     context: context,
-                //     builder: (context) => Container(
-                //           height: 526 * (deviceHeight / prototypeHeight),
-                //           decoration: BoxDecoration(
-                //               borderRadius:
-                //                   BorderRadius.all(Radius.circular(20))),
-                //           child: Text('good'),
-                //         ));
               },
               backgroundColor: Theme.of(context).accentColor,
               child: Icon(Icons.add)),

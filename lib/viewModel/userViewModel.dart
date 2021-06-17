@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:plz/model/user.dart' as me;
-import 'package:provider/provider.dart';
 
 final userCollection = 'User';
 
@@ -13,6 +12,21 @@ class UserViewModel extends ChangeNotifier {
 
   String get uid => this.user.userID;
 
+  set refAlarm(int value) {
+    this.user.refrigerationAlarm = value;
+    notifyListeners();
+  }
+
+  set rTAlarm(int value) {
+    this.user.roomTempAlarm = value;
+    notifyListeners();
+  }
+
+  set frozenAlarm(int value) {
+    this.user.frozenAlarm = value;
+    notifyListeners();
+  }
+
   Future<void> findUserSnapshot(String uid) async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection(userCollection)
@@ -20,15 +34,6 @@ class UserViewModel extends ChangeNotifier {
         .get();
     this.user = me.User.fromSnapshot(snapshot);
     notifyListeners();
-  }
-
-  Stream<DocumentSnapshot> getUser(String uid) {
-    var stream = FirebaseFirestore.instance
-        .collection(userCollection)
-        .doc(uid)
-        .get()
-        .asStream();
-    return stream;
   }
 
   Future<void> deleteUser({String uid}) async {
@@ -43,6 +48,7 @@ class UserViewModel extends ChangeNotifier {
 Future<void> makeUserInformation(
     String uid,
     String name,
+    String profileImage,
     DateTime creationTime,
     DateTime lastSignInTime,
     String refID,
@@ -55,6 +61,7 @@ Future<void> makeUserInformation(
   await FirebaseFirestore.instance.collection(userCollection).doc(uid).set({
     'uid': uid,
     'name': name,
+    'profile_image': profileImage,
     'creation_time': creationTime,
     'last_signed_time': lastSignInTime,
     'refrigerator_id': refID,

@@ -226,10 +226,12 @@ class _addUserInfoPageState extends State<addUserInfoPage> {
                     onPressed: () async {
                       if (alarmIdx == 2) {
                         uuid = Uuid().v4().toString();
+                        String defaultImage = '-1';
 
                         await makeUserInformation(
                             _auth.user.uid,
                             _userName,
+                            defaultImage,
                             _auth.user.metadata.creationTime,
                             _auth.user.metadata.lastSignInTime,
                             uuid,

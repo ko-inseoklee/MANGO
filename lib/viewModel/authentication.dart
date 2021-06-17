@@ -148,6 +148,7 @@ class Authentication with ChangeNotifier {
   Future<void> signOut() {
     try {
       _auth.signOut();
+      notifyListeners();
     } catch (e) {
       print('exception error: $e');
     }

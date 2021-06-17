@@ -32,6 +32,7 @@ class _guidePageState extends State<guidePage> {
   @override
   Widget build(BuildContext context) {
     var _auth = Provider.of<Authentication>(context);
+    context.read<UserViewModel>().findUserSnapshot(_auth.user.uid);
 
     return PageView.builder(
       scrollDirection: Axis.horizontal,
@@ -71,11 +72,9 @@ class _guidePageState extends State<guidePage> {
                           Navigator.pop(context);
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
-                            return StreamProvider<DocumentSnapshot>(
-                              create: (_) => user(uid: _auth.user.uid).snapshot,
-                              builder: (context, child) {
-                                return homePage();
-                              },
+                            return ChangeNotifierProvider<UserViewModel>(
+                              create: (context) => UserViewModel(),
+                              child: homePage(),
                             );
                           }));
                         },

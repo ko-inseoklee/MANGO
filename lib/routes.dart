@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plz/view/addUserInfo.dart';
 import 'package:plz/view/guide.dart';
-import 'package:plz/view/hasUserData.dart';
 import 'package:plz/view/home.dart';
 import 'package:plz/view/landing.dart';
 import 'package:plz/view/login.dart';
@@ -39,8 +38,6 @@ class routers {
         return MaterialPageRoute(builder: (context) => settingAlarmPage());
       case ADDUSERINFO:
         return MaterialPageRoute(builder: (context) => addUserInfoPage());
-      case HASUSERDATA:
-        return MaterialPageRoute(builder: (context) => hasUserDataPage());
       case LANDING:
         return MaterialPageRoute(builder: (context) => landingPage());
       case LOGIN:

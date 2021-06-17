@@ -7,6 +7,7 @@ import 'package:plz/colors.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/widget/dialog/dialog.dart';
 import 'package:plz/view/widget/setting/settingMenu.dart';
+import 'package:plz/viewModel/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../splash.dart';
@@ -35,90 +36,86 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DocumentSnapshot>(
-      builder: (context, documentSnapshot, child) {
-        return Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            title: Text('알람 관리'),
-            centerTitle: true,
-          ),
-          backgroundColor: MangoWhite,
-          body: Container(
-            height: deviceHeight,
-            width: deviceWidth,
-            child: ListView(children: [
-              Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(
-                      '알림 설정',
-                      style: Theme.of(context).textTheme.caption.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.0,
-                          color: Orange400),
-                    ),
-                    padding: EdgeInsets.fromLTRB(
-                        15, 20 * deviceWidth / prototypeWidth, 0, 0),
-                    alignment: Alignment.centerLeft,
-                  ),
-                  //TODO: Push Notification 기능 추가
-                  settingMenu(
-                    menuName: '푸시 알림 설정',
-                    onTap: null,
-                    trailing: Switch(
-                      value: isSwitched,
-                      activeColor: Orange400,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitched = value;
-                        });
-                      },
-                    ),
-                    trailingWidth: 60,
-                  ),
-                  settingMenu(
-                    menuName: '알림 주기 설정',
-                    onTap: () {
-                      setState(() {
-                        isExpanded = !isExpanded;
-                      });
-                    },
-                    trailing: Icon(
-                      isExpanded
-                          ? Icons.keyboard_arrow_down
-                          : Icons.keyboard_arrow_up,
-                      color: Orange400,
-                    ),
-                    trailingWidth: 60,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-                    child: isExpanded
-                        ? ConstrainedBox(
-                            constraints:
-                                BoxConstraints(minHeight: 60, maxHeight: 300),
-                            child: Column(children: [
-                              Expanded(
-                                  child: ListView(
-                                children: [setAlarm()],
-                              ))
-                            ]),
-                          )
-                        : SizedBox(
-                            height: 0.001,
-                          ),
-                  ),
-
-                  settingMenu(menuName: '알림음', onTap: () => comingSoon(context))
-                ],
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text('알람 관리'),
+        centerTitle: true,
+      ),
+      backgroundColor: MangoWhite,
+      body: Container(
+        height: deviceHeight,
+        width: deviceWidth,
+        child: ListView(children: [
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  '알림 설정',
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                      color: Orange400),
+                ),
+                padding: EdgeInsets.fromLTRB(
+                    15, 20 * deviceWidth / prototypeWidth, 0, 0),
+                alignment: Alignment.centerLeft,
               ),
-            ]),
+              //TODO: Push Notification 기능 추가
+              settingMenu(
+                menuName: '푸시 알림 설정',
+                onTap: null,
+                trailing: Switch(
+                  value: isSwitched,
+                  activeColor: Orange400,
+                  onChanged: (value) {
+                    setState(() {
+                      isSwitched = value;
+                    });
+                  },
+                ),
+                trailingWidth: 60,
+              ),
+              settingMenu(
+                menuName: '알림 주기 설정',
+                onTap: () {
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                },
+                trailing: Icon(
+                  isExpanded
+                      ? Icons.keyboard_arrow_down
+                      : Icons.keyboard_arrow_up,
+                  color: Orange400,
+                ),
+                trailingWidth: 60,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                child: isExpanded
+                    ? ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: 60, maxHeight: 300),
+                        child: Column(children: [
+                          Expanded(
+                              child: ListView(
+                            children: [setAlarm()],
+                          ))
+                        ]),
+                      )
+                    : SizedBox(
+                        height: 0.001,
+                      ),
+              ),
+
+              settingMenu(menuName: '알림음', onTap: () => comingSoon(context))
+            ],
           ),
-        );
-      },
+        ]),
+      ),
     );
   }
 
@@ -158,22 +155,22 @@ class setAlarm extends StatefulWidget {
 }
 
 class setAlarmState extends State<setAlarm> {
-  int _refrigerationAlarm = 0;
-  bool _isRefShelf = true;
-  int _frozenAlarm = 0;
-  bool _isFroShelf = true;
-  int _roomTempAlarm = 0;
-  bool _isRTShelf = true;
+  int _refrigerationAlarm;
+  bool _isRefShelf;
+  int _frozenAlarm;
+  bool _isFroShelf;
+  int _roomTempAlarm;
+  bool _isRTShelf;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DocumentSnapshot>(builder: (context, user, child) {
-      _isRefShelf = user.data()[isRefAlarm];
-      _isFroShelf = user.data()[isFrozenAlarm];
-      _isRTShelf = user.data()[isRTAlarm];
-      _refrigerationAlarm = user.data()[refAlarmTime];
-      _frozenAlarm = user.data()[frozenAlarmTime];
-      _roomTempAlarm = user.data()[rTAlarmTime];
+    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+      _isRefShelf = userViewModel.user.isRefShelf;
+      _isFroShelf = userViewModel.user.isFroShelf;
+      _isRTShelf = userViewModel.user.isRTShelf;
+      _refrigerationAlarm = userViewModel.user.refrigerationAlarm;
+      _frozenAlarm = userViewModel.user.frozenAlarm;
+      _roomTempAlarm = userViewModel.user.roomTempAlarm;
 
       return Column(children: [
         Container(
@@ -191,25 +188,37 @@ class setAlarmState extends State<setAlarm> {
           menuName: '유통기한 기준',
           onTap: null,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.roomTempAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.rTAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: _isRTShelf
-                    ? Text(
-                        _roomTempAlarm.toString() + "일 전",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: _isRTShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: _isRTShelf
+                        ? Text(
+                            _roomTempAlarm.toString() + "일 전",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: _isRTShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
           isActive: _isRTShelf,
         ),
@@ -217,25 +226,37 @@ class setAlarmState extends State<setAlarm> {
           menuName: '구매일 기준',
           onTap: null,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.roomTempAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: !_isRTShelf
-                    ? Text(
-                        _roomTempAlarm.toString() + "일 후",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: !_isRTShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: !_isRTShelf
+                        ? Text(
+                            _roomTempAlarm.toString() + "일 후",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: !_isRTShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
           isActive: !_isRTShelf,
         ),
@@ -260,22 +281,12 @@ class setAlarmState extends State<setAlarm> {
                     context: context,
                     minNumber: 1,
                     maxNumber: 60,
-                    selectedNumber: _refrigerationAlarm,
-                    onChanged: (value) async {
-                      await FirebaseFirestore.instance
-                          .collection('User')
-                          .doc(user.id)
-                          .update({refAlarmTime: value});
-
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
                       setState(() {
-                        _refrigerationAlarm = value;
-                        print('inner ref == $_refrigerationAlarm');
+                        userViewModel.refAlarm = value;
                       });
                     });
-                setState(() {
-                  // _refrigerationAlarm = 15;
-                  print('outer ref == $_refrigerationAlarm');
-                });
               },
               child: Row(
                 children: [
@@ -303,25 +314,37 @@ class setAlarmState extends State<setAlarm> {
           onTap: null,
           isActive: !_isRefShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: !_isRefShelf
-                    ? Text(
-                        _refrigerationAlarm.toString() + "일 후",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: !_isRefShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: !_isRefShelf
+                        ? Text(
+                            _refrigerationAlarm.toString() + "일 후",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: !_isRefShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
         Container(
@@ -340,25 +363,37 @@ class setAlarmState extends State<setAlarm> {
           onTap: null,
           isActive: _isFroShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: _isFroShelf
-                    ? Text(
-                        _frozenAlarm.toString() + "일 전",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: _isFroShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: _isFroShelf
+                        ? Text(
+                            _frozenAlarm.toString() + "일 전",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: _isFroShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
         settingMenu(
@@ -366,25 +401,37 @@ class setAlarmState extends State<setAlarm> {
           onTap: null,
           isActive: !_isFroShelf,
           trailing: FlatButton(
+              onPressed: () {
+                showMaterialNumberPicker(
+                    context: context,
+                    minNumber: 1,
+                    maxNumber: 60,
+                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    onChanged: (value) {
+                      setState(() {
+                        userViewModel.refAlarm = value;
+                      });
+                    });
+              },
               child: Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 50,
-                child: !_isFroShelf
-                    ? Text(
-                        _frozenAlarm.toString() + "일 후",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    : Text('-'),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: !_isFroShelf ? MangoBlack : MangoBehindColor,
-                size: 18.0,
-              )
-            ],
-          )),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 50,
+                    child: !_isFroShelf
+                        ? Text(
+                            _frozenAlarm.toString() + "일 후",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          )
+                        : Text('-'),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: !_isFroShelf ? MangoBlack : MangoBehindColor,
+                    size: 18.0,
+                  )
+                ],
+              )),
           trailingWidth: 100,
         ),
       ]);
