@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const MangoBlack = Color(0xFF000000);
 
 const MangoDisabledColor = Color(0xFFC2C2C2);
-const MangoBehindColor = Color(0xFFE6E6E6);
+const MangoBehindColor = Color(0xFFF9F8F6);
 const MangoErrorColor = Color(0xFFB00020);
 const MangoDisabledContainerColor = Color(0xFFEDEDED);
 

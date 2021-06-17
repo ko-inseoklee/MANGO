@@ -41,7 +41,7 @@ class _settingMenuState extends State<settingMenu> {
               title: Text(
                 widget.menuName,
                 style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      color: widget.isActive ? MangoBlack : MangoBehindColor,
+                      color: widget.isActive ? MangoBlack : MangoDisabledColor,
                     ),
                 textAlign: TextAlign.left,
               ),

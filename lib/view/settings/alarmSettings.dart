@@ -27,8 +27,6 @@ class _settingAlarmPageState extends State<settingAlarmPage> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  DocumentSnapshot _user;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -175,7 +173,10 @@ class setAlarmState extends State<setAlarm> {
                   padding: EdgeInsets.only(
                       right: 30.0 * deviceWidth / prototypeWidth),
                   child: RaisedButton(
-                    color: MangoBehindColor,
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(color: MangoDisabledColor),
+                        borderRadius: BorderRadius.circular(10)),
+                    color: MangoWhite,
                     onPressed: () {},
                     child: Text('적용'),
                   ),
@@ -218,7 +219,7 @@ class setAlarmState extends State<setAlarm> {
                     Icons.keyboard_arrow_down,
                     color: userViewModel.user.isRTShelf
                         ? MangoBlack
-                        : MangoBehindColor,
+                        : MangoDisabledColor,
                     size: 18.0,
                   )
                 ],
@@ -262,7 +263,7 @@ class setAlarmState extends State<setAlarm> {
                     Icons.keyboard_arrow_down,
                     color: !userViewModel.user.isRTShelf
                         ? MangoBlack
-                        : MangoBehindColor,
+                        : MangoDisabledColor,
                     size: 18.0,
                   )
                 ],
@@ -319,7 +320,7 @@ class setAlarmState extends State<setAlarm> {
                     Icons.keyboard_arrow_down,
                     color: userViewModel.user.isRefShelf
                         ? MangoBlack
-                        : MangoBehindColor,
+                        : MangoDisabledColor,
                     size: 18.0,
                   )
                 ],
@@ -364,7 +365,7 @@ class setAlarmState extends State<setAlarm> {
                     Icons.keyboard_arrow_down,
                     color: !userViewModel.user.isRefShelf
                         ? MangoBlack
-                        : MangoBehindColor,
+                        : MangoDisabledColor,
                     size: 18.0,
                   )
                 ],
@@ -419,7 +420,7 @@ class setAlarmState extends State<setAlarm> {
                     Icons.keyboard_arrow_down,
                     color: userViewModel.user.isFroShelf
                         ? MangoBlack
-                        : MangoBehindColor,
+                        : MangoDisabledColor,
                     size: 18.0,
                   )
                 ],
@@ -463,7 +464,7 @@ class setAlarmState extends State<setAlarm> {
                     Icons.keyboard_arrow_down,
                     color: !userViewModel.user.isFroShelf
                         ? MangoBlack
-                        : MangoBehindColor,
+                        : MangoDisabledColor,
                     size: 18.0,
                   )
                 ],
