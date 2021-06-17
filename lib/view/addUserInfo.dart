@@ -1,9 +1,9 @@
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/services.dart';
 import 'package:plz/colors.dart';
-import 'package:plz/controller/authentication.dart';
-import 'package:plz/controller/userController.dart';
-import 'package:plz/controller/refrigeratorController.dart';
+import 'package:plz/viewModel/authentication.dart';
+import 'package:plz/viewModel/userViewModel.dart';
+import 'package:plz/viewModel/refrigeratorController.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/routes.dart';
 import 'package:plz/view/splash.dart';

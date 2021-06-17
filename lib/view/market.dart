@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plz/controller/authentication.dart';
+import 'package:plz/viewModel/authentication.dart';
 import 'package:provider/provider.dart';
 
 class marketPage extends StatelessWidget {

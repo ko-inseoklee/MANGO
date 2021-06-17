@@ -1,35 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plz/model/userRefrigerator.dart';
+
+//Field name for User document.
+final isFrozenAlarm = 'frozen_is_shelf';
+final frozenAlarmTime = 'frozen_shelf_life_alarm';
+final isRefAlarm = 'refrigeration_is_shelf';
+final refAlarmTime = 'refrigeration_shelf_life_alarm';
+final isRTAlarm = 'room_temp_is_shelf';
+final rTAlarmTime = 'room_temp_shelf_life_alarm';
 
 class User {
-  String userID;
-  DateTime creationTime;
-  DateTime lastSignIn;
-  String profileImageReference;
-  String userName;
-  DocumentReference reference;
-  String refrigeratorID;
-  int refrigerationAlarm;
-  bool isRefShelf;
-  int frozenAlarm;
-  bool isFroShelf;
-  int roomTempAlarm;
-  bool isRTShelf;
+  final String userID;
+  final DateTime creationTime;
+  final DateTime lastSignIn;
+  final String profileImageReference;
+  final String userName;
+  final String refrigeratorID;
+  final int refrigerationAlarm;
+  final bool isRefShelf;
+  final int frozenAlarm;
+  final bool isFroShelf;
+  final int roomTempAlarm;
+  final bool isRTShelf;
+  final DocumentReference reference;
 
   User(
-      {this.userID,
+      {this.lastSignIn,
+      this.profileImageReference,
+      this.refrigerationAlarm,
+      this.isRefShelf,
+      this.frozenAlarm,
+      this.isFroShelf,
+      this.roomTempAlarm,
+      this.isRTShelf,
+      this.userID,
       this.refrigeratorID,
       this.creationTime,
       this.userName,
       this.reference});
-
-  User.fromAuthentication(
-      String uid, String uName, DateTime cTime, DateTime lSignIn) {
-    this.userID = uid;
-    this.userName = uName;
-    this.creationTime = cTime;
-    this.lastSignIn = lSignIn;
-  }
 
   User.fromSnapshot(DocumentSnapshot snapshot)
       : assert(snapshot != null),
@@ -74,9 +81,3 @@ class user {
 }
 
 //Field name of user collection for firebase.
-final isFrozenAlarm = 'frozen_is_shelf';
-final frozenAlarmTime = 'frozen_shelf_life_alarm';
-final isRefAlarm = 'refrigeration_is_shelf';
-final refAlarmTime = 'refrigeration_shelf_life_alarm';
-final isRTAlarm = 'room_temp_is_shelf';
-final rTAlarmTime = 'room_temp_shelf_life_alarm';

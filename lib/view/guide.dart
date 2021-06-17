@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plz/controller/authentication.dart';
+import 'package:plz/viewModel/authentication.dart';
 import 'package:plz/model/user.dart';
 import 'package:plz/view/splash.dart';
 import 'package:provider/provider.dart';

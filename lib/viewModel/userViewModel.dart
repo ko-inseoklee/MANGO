@@ -1,19 +1,21 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:plz/controller/authentication.dart';
 import 'package:plz/model/user.dart' as me;
+import 'package:provider/provider.dart';
 
 final userCollection = 'User';
 
-class UserViewModel {
-  Future<me.User> findUserSnapshot(String uid) async {
+class UserViewModel extends ChangeNotifierProvider {
+  me.User user;
+
+  UserViewModel({this.user});
+
+  Future<void> findUserSnapshot(String uid) async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection(userCollection)
         .doc(uid)
         .get();
-    return me.User.fromSnapshot(snapshot);
+    this.user = me.User.fromSnapshot(snapshot);
   }
 
   Stream<DocumentSnapshot> getUser(String uid) {
