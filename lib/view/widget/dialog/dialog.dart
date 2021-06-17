@@ -29,7 +29,8 @@ class _mangoDialogState extends State<mangoDialog> {
         widget.hasOK
             ? FlatButton(
                 child: Text('확인', style: TextStyle(color: Orange400)),
-                onPressed: widget.onTapOK)
+                onPressed: widget.onTapOK,
+                onLongPress: () => Navigator.pop(context))
             : Text(""),
         FlatButton(
           child: Text('취소', style: TextStyle(color: MangoDisabledColor)),

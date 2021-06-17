@@ -27,6 +27,21 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  set isRefrigeration(bool value) {
+    this.user.isRefShelf = value;
+    notifyListeners();
+  }
+
+  set isRoomTemp(bool value) {
+    this.user.isRTShelf = value;
+    notifyListeners();
+  }
+
+  set isFrozen(bool value) {
+    this.user.isFroShelf = value;
+    notifyListeners();
+  }
+
   Future<void> findUserSnapshot(String uid) async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection(userCollection)

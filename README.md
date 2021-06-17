@@ -21,10 +21,9 @@ A new Flutter application.
     - Guide
         - 페이지 넘어갈 때 슬라이더 넘어가지 않도록
     - Global
-        - 엑셀파일 불러오기
         - showDialog Customizing - 버튼 추가, snackbar 추가.
         - Push notification
-        - FAB 컴포넌트 완료 -> 기본 디자
+        - FAB 컴포넌트 완료 -> 기본 디자인
     
 ## Dev Notify
     - IOS
@@ -32,4 +31,4 @@ A new Flutter application.
         
 ## Bug
     - 로그인 상태 페이지를 새로고침하지 않으면 다음으로 넘어가지 않는 버그(카카오)
-    - StreamProvider에 필드 값을 바꿔줬는데, 왜 바로 안 바뀌는지..?
+    - 알람 설정 시 dialog가 꺼지지 않음. (확인버튼 클릭시)

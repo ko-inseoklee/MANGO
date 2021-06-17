@@ -155,23 +155,9 @@ class setAlarm extends StatefulWidget {
 }
 
 class setAlarmState extends State<setAlarm> {
-  int _refrigerationAlarm;
-  bool _isRefShelf;
-  int _frozenAlarm;
-  bool _isFroShelf;
-  int _roomTempAlarm;
-  bool _isRTShelf;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
-      _isRefShelf = userViewModel.user.isRefShelf;
-      _isFroShelf = userViewModel.user.isFroShelf;
-      _isRTShelf = userViewModel.user.isRTShelf;
-      _refrigerationAlarm = userViewModel.user.refrigerationAlarm;
-      _frozenAlarm = userViewModel.user.frozenAlarm;
-      _roomTempAlarm = userViewModel.user.roomTempAlarm;
-
       return Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
@@ -186,7 +172,21 @@ class setAlarmState extends State<setAlarm> {
         ),
         settingMenu(
           menuName: '유통기한 기준',
-          onTap: null,
+          onTap: () {
+            if (!userViewModel.user.isRTShelf) {
+              showDialog(
+                  context: context,
+                  child: mangoDialog(
+                      dialogTitle: '알림 기준 변경',
+                      contentText: '알림 기준을 변경하시겠습니까?',
+                      hasOK: true,
+                      onTapOK: () {
+                        setState(() {
+                          userViewModel.isRoomTemp = true;
+                        });
+                      }));
+            }
+          },
           trailing: FlatButton(
               onPressed: () {
                 showMaterialNumberPicker(
@@ -205,26 +205,42 @@ class setAlarmState extends State<setAlarm> {
                   Container(
                     alignment: Alignment.center,
                     width: 50,
-                    child: _isRTShelf
+                    child: userViewModel.user.isRTShelf
                         ? Text(
-                            _roomTempAlarm.toString() + "일 전",
+                            userViewModel.user.roomTempAlarm.toString() + "일 전",
                             style: Theme.of(context).textTheme.subtitle2,
                           )
                         : Text('-'),
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: _isRTShelf ? MangoBlack : MangoBehindColor,
+                    color: userViewModel.user.isRTShelf
+                        ? MangoBlack
+                        : MangoBehindColor,
                     size: 18.0,
                   )
                 ],
               )),
           trailingWidth: 100,
-          isActive: _isRTShelf,
+          isActive: userViewModel.user.isRTShelf,
         ),
         settingMenu(
           menuName: '구매일 기준',
-          onTap: null,
+          onTap: () {
+            if (userViewModel.user.isRTShelf) {
+              showDialog(
+                  context: context,
+                  child: mangoDialog(
+                      dialogTitle: '알림 기준 변경',
+                      contentText: '알림 기준을 변경하시겠습니까?',
+                      hasOK: true,
+                      onTapOK: () {
+                        setState(() {
+                          userViewModel.isRoomTemp = false;
+                        });
+                      }));
+            }
+          },
           trailing: FlatButton(
               onPressed: () {
                 showMaterialNumberPicker(
@@ -243,22 +259,24 @@ class setAlarmState extends State<setAlarm> {
                   Container(
                     alignment: Alignment.center,
                     width: 50,
-                    child: !_isRTShelf
+                    child: !userViewModel.user.isRTShelf
                         ? Text(
-                            _roomTempAlarm.toString() + "일 후",
+                            userViewModel.user.roomTempAlarm.toString() + "일 후",
                             style: Theme.of(context).textTheme.subtitle2,
                           )
                         : Text('-'),
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: !_isRTShelf ? MangoBlack : MangoBehindColor,
+                    color: !userViewModel.user.isRTShelf
+                        ? MangoBlack
+                        : MangoBehindColor,
                     size: 18.0,
                   )
                 ],
               )),
           trailingWidth: 100,
-          isActive: !_isRTShelf,
+          isActive: !userViewModel.user.isRTShelf,
         ),
         Container(
           padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
@@ -273,8 +291,22 @@ class setAlarmState extends State<setAlarm> {
         ),
         settingMenu(
           menuName: '유통기한 기준',
-          onTap: null,
-          isActive: _isRefShelf,
+          onTap: () {
+            if (!userViewModel.user.isRefShelf) {
+              showDialog(
+                  context: context,
+                  child: mangoDialog(
+                      dialogTitle: '알림 기준 변경',
+                      contentText: '알림 기준을 변경하시겠습니까?',
+                      hasOK: true,
+                      onTapOK: () {
+                        setState(() {
+                          userViewModel.isRefrigeration = true;
+                        });
+                      }));
+            }
+          },
+          isActive: userViewModel.user.isRefShelf,
           trailing: FlatButton(
               onPressed: () {
                 showMaterialNumberPicker(
@@ -293,16 +325,19 @@ class setAlarmState extends State<setAlarm> {
                   Container(
                     alignment: Alignment.center,
                     width: 50,
-                    child: _isRefShelf
+                    child: userViewModel.user.isRefShelf
                         ? Text(
-                            _refrigerationAlarm.toString() + "일 전",
+                            userViewModel.user.refrigerationAlarm.toString() +
+                                "일 전",
                             style: Theme.of(context).textTheme.subtitle2,
                           )
                         : Text('-'),
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: _isRefShelf ? MangoBlack : MangoBehindColor,
+                    color: userViewModel.user.isRefShelf
+                        ? MangoBlack
+                        : MangoBehindColor,
                     size: 18.0,
                   )
                 ],
@@ -311,8 +346,22 @@ class setAlarmState extends State<setAlarm> {
         ),
         settingMenu(
           menuName: '구매일 기준',
-          onTap: null,
-          isActive: !_isRefShelf,
+          onTap: () {
+            if (userViewModel.user.isRefShelf) {
+              showDialog(
+                  context: context,
+                  child: mangoDialog(
+                      dialogTitle: '알림 기준 변경',
+                      contentText: '알림 기준을 변경하시겠습니까?',
+                      hasOK: true,
+                      onTapOK: () {
+                        setState(() {
+                          userViewModel.isRefrigeration = false;
+                        });
+                      }));
+            }
+          },
+          isActive: !userViewModel.user.isRefShelf,
           trailing: FlatButton(
               onPressed: () {
                 showMaterialNumberPicker(
@@ -331,16 +380,19 @@ class setAlarmState extends State<setAlarm> {
                   Container(
                     alignment: Alignment.center,
                     width: 50,
-                    child: !_isRefShelf
+                    child: !userViewModel.user.isRefShelf
                         ? Text(
-                            _refrigerationAlarm.toString() + "일 후",
+                            userViewModel.user.refrigerationAlarm.toString() +
+                                "일 후",
                             style: Theme.of(context).textTheme.subtitle2,
                           )
                         : Text('-'),
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: !_isRefShelf ? MangoBlack : MangoBehindColor,
+                    color: !userViewModel.user.isRefShelf
+                        ? MangoBlack
+                        : MangoBehindColor,
                     size: 18.0,
                   )
                 ],
@@ -360,18 +412,32 @@ class setAlarmState extends State<setAlarm> {
         ),
         settingMenu(
           menuName: '유통기한 기준',
-          onTap: null,
-          isActive: _isFroShelf,
+          onTap: () {
+            if (!userViewModel.user.isFroShelf) {
+              showDialog(
+                  context: context,
+                  child: mangoDialog(
+                      hasOK: true,
+                      dialogTitle: '알림 기준 변경',
+                      contentText: '알림 기준을 변경하시겠습니까?',
+                      onTapOK: () {
+                        setState(() {
+                          userViewModel.isFrozen = true;
+                        });
+                      }));
+            }
+          },
+          isActive: userViewModel.user.isFroShelf,
           trailing: FlatButton(
               onPressed: () {
                 showMaterialNumberPicker(
                     context: context,
                     minNumber: 1,
                     maxNumber: 60,
-                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    selectedNumber: userViewModel.user.frozenAlarm,
                     onChanged: (value) {
                       setState(() {
-                        userViewModel.refAlarm = value;
+                        userViewModel.frozenAlarm = value;
                       });
                     });
               },
@@ -380,16 +446,18 @@ class setAlarmState extends State<setAlarm> {
                   Container(
                     alignment: Alignment.center,
                     width: 50,
-                    child: _isFroShelf
+                    child: userViewModel.user.isFroShelf
                         ? Text(
-                            _frozenAlarm.toString() + "일 전",
+                            userViewModel.user.frozenAlarm.toString() + "일 전",
                             style: Theme.of(context).textTheme.subtitle2,
                           )
                         : Text('-'),
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: _isFroShelf ? MangoBlack : MangoBehindColor,
+                    color: userViewModel.user.isFroShelf
+                        ? MangoBlack
+                        : MangoBehindColor,
                     size: 18.0,
                   )
                 ],
@@ -398,18 +466,32 @@ class setAlarmState extends State<setAlarm> {
         ),
         settingMenu(
           menuName: '구매일 기준',
-          onTap: null,
-          isActive: !_isFroShelf,
+          onTap: () {
+            if (userViewModel.user.isFroShelf) {
+              showDialog(
+                  context: context,
+                  child: mangoDialog(
+                      dialogTitle: '알림 기준 변경',
+                      contentText: '알림 기준을 변경하시겠습니까?',
+                      hasOK: true,
+                      onTapOK: () {
+                        setState(() {
+                          userViewModel.isFrozen = false;
+                        });
+                      }));
+            }
+          },
+          isActive: !userViewModel.user.isFroShelf,
           trailing: FlatButton(
               onPressed: () {
                 showMaterialNumberPicker(
                     context: context,
                     minNumber: 1,
                     maxNumber: 60,
-                    selectedNumber: userViewModel.user.refrigerationAlarm,
+                    selectedNumber: userViewModel.user.frozenAlarm,
                     onChanged: (value) {
                       setState(() {
-                        userViewModel.refAlarm = value;
+                        userViewModel.frozenAlarm = value;
                       });
                     });
               },
@@ -418,16 +500,18 @@ class setAlarmState extends State<setAlarm> {
                   Container(
                     alignment: Alignment.center,
                     width: 50,
-                    child: !_isFroShelf
+                    child: !userViewModel.user.isFroShelf
                         ? Text(
-                            _frozenAlarm.toString() + "일 후",
+                            userViewModel.user.frozenAlarm.toString() + "일 후",
                             style: Theme.of(context).textTheme.subtitle2,
                           )
                         : Text('-'),
                   ),
                   Icon(
                     Icons.keyboard_arrow_down,
-                    color: !_isFroShelf ? MangoBlack : MangoBehindColor,
+                    color: !userViewModel.user.isFroShelf
+                        ? MangoBlack
+                        : MangoBehindColor,
                     size: 18.0,
                   )
                 ],
